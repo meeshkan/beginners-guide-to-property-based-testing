@@ -40,8 +40,14 @@ def test_concatenate(input_strings):
     assert result.endswith(input_strings[1])
 ```
 
-Here
+Here [...]
 
+# Vocabulary
+- **Example-based testing** The traditional way of writing tests using examples.
+- **Property-based testing** 
+- **Preconditions**
+- **Postconditions**
+- [...]
 
 
 
