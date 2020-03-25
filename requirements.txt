@@ -1,2 +1,5 @@
+black
+flake8
 hypothesis
+isort
 pytest

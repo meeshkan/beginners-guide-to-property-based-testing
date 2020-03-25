@@ -1,5 +1,5 @@
-from hypothesis import given, event
 import hypothesis.strategies as some
+from hypothesis import event, given
 
 
 def encode(input_string):
@@ -71,23 +71,23 @@ def my_sort(l):
 
 
 def test_mysort():
-    l = [5, 3, 2, 1, 6]
-    l_sorted = my_sort(l)
-    assert l_sorted == [1, 2, 3, 5, 6]
+    list_unsorted = [5, 3, 2, 1, 6]
+    list_sorted = my_sort(list_unsorted)
+    assert list_sorted == [1, 2, 3, 5, 6]
 
 
-@given(l=some.lists(some.integers()))
-def test_my_sort(l):
-    l_sorted = my_sort(l)
-    assert len(l_sorted) == len(l)
-    assert set(l_sorted) == set(l)
+@given(input_list=some.lists(some.integers()))
+def test_my_sort(input_list):
+    l_sorted = my_sort(input_list)
+    assert len(l_sorted) == len(input_list)
+    assert set(l_sorted) == set(input_list)
 
     def length_to_range(n):
         base = 5
         div = n // base
         return div * base, (div + 1) * base
 
-    length_range = length_to_range(len(l))
+    length_range = length_to_range(len(input_list))
     event("input list length in range {}-{}".format(*length_range))
-    for i in range(len(l) - 1):
+    for i in range(len(input_list) - 1):
         assert l_sorted[i] <= l_sorted[i + 1]
