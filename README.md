@@ -25,7 +25,9 @@ def test_bubble_sort_example():
 ```
 
 ## Property based testing
-While great and simple, testing examples does just that: test examples that we have come up with! What if we want to test hundreds of test cases, possibly ones we could never dream of coming up with ourselves? 
+While great and simple, testing examples does just that: test examples that we have come up with! What if we want to test hundreds of test cases, possibly ones we could never dream of coming up with ourselves? How could we have saved the student records in the below example?
+
+![Bobby tables](https://imgs.xkcd.com/comics/exploits_of_a_mom.png)
 
 **Property based testing** is a different approach here to help with that. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
 
