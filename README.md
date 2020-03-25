@@ -7,7 +7,7 @@ This repository contains this README article introducing property-based testing 
 
 
 # What is property based testing?
-Normally software tests are created manually from examples. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
+Normally software testing is done through **example-based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
 
 TODO: Mention that it's silly and unrealistic, but we'll come to more realistic uses cases later.
 
@@ -20,9 +20,7 @@ def test_concatenate():
     assert "1 2" == concatenate("1", "2")
 ```
 
-Property based tests are created using a different approach. You
-yourself don't write the exact input - a testing framework does that for
-you. What you as a developer do is:
+**Property based testing** is using a different approach. You yourself don't write the exact input - a testing framework does that for you. What you as a developer do is:
 
 - You guide test testing framework in what kind of input you want to use.
   - This is in order to not get any random input. TODO: Clarify
@@ -37,7 +35,7 @@ import hypothesis.strategies as some
 @given(some.tuples(some.text(), some.text()))
 def test_concatenate(input_strings):
     result = concatenate(input_strings[0], input_strings[1])
-    # 
+    # Assert on postconditions:
     assert result.startswith(j[0])
     assert result.endswith(input_strings[1])
 ```
