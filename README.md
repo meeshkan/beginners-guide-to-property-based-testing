@@ -7,26 +7,26 @@ This repository contains this README article introducing property-based testing 
 
 
 # What is property based testing?
-Normally software testing is done through **example-based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
+Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
 
-TODO: Mention that it's silly and unrealistic, but we'll come to more realistic uses cases later.
+Let's start with a toy example - a python concatenate function which, as the name implies, concatenates two strings:
 
 ```python
 def concatenate(a, b):
     return a + " " + b
 
 def test_concatenate():
+    # Test using two manually worked out examples:
     assert "hello world" == concatenate("hello", "world")
     assert "1 2" == concatenate("1", "2")
 ```
 
-**Property based testing** is using a different approach. You yourself don't write the exact input - a testing framework does that for you. What you as a developer do is:
+**Property based testing** is using a different approach. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
 
-- You guide test testing framework in what kind of input you want to use.
-  - This is in order to not get any random input. TODO: Clarify
+- You specify what input to generate.
 - You assert on properties which are true regardless of exact input.
 
-Let's see an example:
+Let's see an example using the [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) test library
 
 ```python
 import hypothesis.strategies as some
@@ -35,12 +35,25 @@ import hypothesis.strategies as some
 @given(some.tuples(some.text(), some.text()))
 def test_concatenate(input_strings):
     result = concatenate(input_strings[0], input_strings[1])
+    
     # Assert on postconditions:
     assert result.startswith(j[0])
     assert result.endswith(input_strings[1])
 ```
 
-Here [...]
+Here we specify that we want two strings (currently unspecified, but we could for example specify that we want them to be of a specific length, or contain specific characters), and **asserts on properties that are true regardless of the exact input**.
+
+While a different way of thinking about what it is that drives the test
+
+| Example based                          | Property based                              |
+| -------------------------------------- | ------------------------------------------- |
+| 1. Set up some data                    | 1. For all data matching some specification |
+| 2. Perform some operations on the data | 2. Perform some operations on the data      |
+| 3. Assert something about the result   | 3. Assert something about the result        |
+
+# Why use property based testing?
+- A computer can generate a lot more input than a human can.
+- It forces you to reason and express at a higher level than individual examples. 
 
 # Vocabulary
 - **Example-based testing** The traditional way of writing tests using examples.
