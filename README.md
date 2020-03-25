@@ -1,3 +1,5 @@
+[![CI](https://github.com/meeshkan/introduction-to-property-based-testing/workflows/CI/badge.svg)](https://github.com/meeshkan/introduction-to-property-based-testing/actions?query=branch%3Amaster)
+
 # Introduction to property-based testing
 This repository contains this README article introducing property-based testing with code samples in python.
 
