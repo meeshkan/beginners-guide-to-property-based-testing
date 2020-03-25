@@ -1,4 +1,8 @@
-test: venv/.requirements_installed
+test:
+	${MAKE} format
+	${MAKE} check
+
+check: venv/.requirements_installed
 	. venv/bin/activate; black --check .; isort --check-only; flake8 --exclude .git,venv,__pycache__,build,dist; pytest
 
 format: venv/.requirements_installed
@@ -14,4 +18,4 @@ venv/bin/activate:
 clean:
 	rm -Rf venv
 
-.PHONY: clean test
+.PHONY: clean check test

@@ -50,7 +50,7 @@ Here
 
 
 # Running the tests
-Execute `make` to run the tests (it will setup a `venv` folder and install dependencies there).
+Execute `make` to run the tests (it will setup a `venv` folder and install dependencies there). It will also format the code using [black](https://black.readthedocs.io/en/stable/) and [isort](https://timothycrosley.github.io/isort/) automatically.
 
 # Resources
 - https://hackage.haskell.org/package/QuickCheck

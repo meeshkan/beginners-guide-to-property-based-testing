@@ -74,8 +74,8 @@ def concatenate(a, b):
 @given(some.tuples(some.text(), some.text()))
 def test_concatenate(input_strings):
     result = concatenate(input_strings[0], input_strings[1])
-    assert result.startswith(input_strings[0] + ' ')
-    assert result.endswith(' ' + input_strings[1])
+    assert result.startswith(input_strings[0] + " ")
+    assert result.endswith(" " + input_strings[1])
 
 
 def test_mysort():
