@@ -3,25 +3,30 @@
 # Introduction to property-based testing
 This repository contains this README article introducing property-based testing with code samples in python.
 
-
-
-
 # What is property based testing?
 Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
 
-Let's start with a toy example - a python concatenate function which, as the name implies, concatenates two strings:
+Let's start with a toy example - a python `bubble_sort` function to sort a list of numbers (note: this is a toy example, use [list.sort()](https://docs.python.org/3/library/stdtypes.html#list.sort) in production):
 
 ```python
-def concatenate(a, b):
-    return a + " " + b
+def bubble_sort(nums):
+    swapped = True
+    while swapped:
+        swapped = False
+        for i in range(len(nums) - 1):
+            if nums[i] > nums[i + 1]:
+                nums[i], nums[i + 1] = nums[i + 1], nums[i]
+                swapped = True
 
-def test_concatenate():
+def test_bubble_sort_example():
     # Test using two manually worked out examples:
-    assert "hello world" == concatenate("hello", "world")
-    assert "1 2" == concatenate("1", "2")
+    assert [1, 2, 3, 4, 5] == bubble_sort([5, 3, 1, 4, 2])
+    assert [1, 1, 3, 3, 5] == bubble_sort([1, 3, 1, 3, 5])
 ```
 
-**Property based testing** is using a different approach. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
+While great and simple, testing examples does just that: test examples that we have come up with! What if we want to test hundreds of test cases, possibly ones we could never dream of coming up with ourselves? 
+
+**Property based testing** is a different approach here to help with that. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
 
 - You specify what input to generate.
 - You assert on properties which are true regardless of exact input.
@@ -43,7 +48,7 @@ def test_concatenate(input_strings):
 
 Here we specify that we want two strings (currently unspecified, but we could for example specify that we want them to be of a specific length, or contain specific characters), and **asserts on properties that are true regardless of the exact input**.
 
-While a different way of thinking about what it is that drives the test
+While different, a property based test shares a lot with how an example based test is written.
 
 | Example based                          | Property based                              |
 | -------------------------------------- | ------------------------------------------- |
@@ -54,6 +59,9 @@ While a different way of thinking about what it is that drives the test
 # Why use property based testing?
 - A computer can generate a lot more input than a human can.
 - It forces you to reason and express at a higher level than individual examples. 
+
+# Why use example based testing?
+- Specific test 
 
 # Vocabulary
 - **Example-based testing** The traditional way of writing tests using examples.
