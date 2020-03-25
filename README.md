@@ -3,7 +3,7 @@
 # Introduction to property-based testing
 This repository contains this README article introducing property-based testing with code samples in python.
 
-# Example based testing
+## Example based testing
 Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
 
 Let's start with a toy example - a python `bubble_sort` function to sort a list of numbers (note: this is a toy example, use [list.sort()](https://docs.python.org/3/library/stdtypes.html#list.sort) in production):
@@ -24,7 +24,7 @@ def test_bubble_sort_example():
     assert [1, 1, 3, 3, 5] == bubble_sort([1, 3, 1, 3, 5])
 ```
 
-# Property based testing
+## Property based testing
 While great and simple, testing examples does just that: test examples that we have come up with! What if we want to test hundreds of test cases, possibly ones we could never dream of coming up with ourselves? 
 
 **Property based testing** is a different approach here to help with that. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
@@ -57,14 +57,14 @@ While different, a property based test shares a lot with how an example based te
 | 2. Perform some operations on the data | 2. Perform some operations on the data      |
 | 3. Assert something about the result   | 3. Assert something about the result        |
 
-# Why use property based testing?
+## Why use property based testing?
 - A computer can generate a lot more input than a human can.
 - It forces you to reason and express at a higher level than individual examples. 
 
-# Why use example based testing?
+## Why use example based testing?
 - Specific test 
 
-# Vocabulary
+## Vocabulary
 - **Example-based testing** The traditional way of writing tests using examples.
 - **Property-based testing** 
 - **Preconditions**
