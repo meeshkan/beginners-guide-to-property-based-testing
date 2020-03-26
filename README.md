@@ -64,7 +64,8 @@ While different, a property based test shares a lot with how an example based te
 - It forces you to reason and express at a higher level than individual examples. 
 
 ## Why use example based testing?
-- Specific test 
+- Test cases using specific examples may in many cases be more readable.
+- Regression tests of specific bugs to prevent them from ever happening again.
 
 ## Vocabulary
 - **Example-based testing** The traditional way of writing tests using examples.
@@ -74,13 +75,20 @@ While different, a property based test shares a lot with how an example based te
 - [...]
 
 
+## Libraries
+- [QuickCheck](https://hackage.haskell.org/package/QuickCheck): Haskell
+- [fast-check](https://github.com/dubzzz/fast-check): TypeScript
+- [Hypothesis](https://hypothesis.readthedocs.io/en/latest/): Python (covered in this article)
+- Includes NumPy and Pandas tools!
+- [PropEr](https://proper-testing.github.io/): Erlang
+- [PropCheck](https://github.com/alfert/propcheck): Elixir
+- [FsCheck](https://fscheck.github.io/FsCheck/): .NET
 
 
-
-# Running the tests
+## Meta: Running the tests
 Execute `make` to run the tests (it will setup a `venv` folder and install dependencies there). It will also format the code using [black](https://black.readthedocs.io/en/stable/) and [isort](https://timothycrosley.github.io/isort/) automatically.
 
-# Resources
+# Meta: Various resources
 - https://hackage.haskell.org/package/QuickCheck
   - Early (1999) Haskell library.
   - https://jqwik.net/property-based-testing.html mentions it as "Quickcheck is the original tool for writing property tests."
