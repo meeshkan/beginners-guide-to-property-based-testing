@@ -56,7 +56,8 @@ def test_bubble_sort_properties(input_list):
     # Regardless of input, sorting should never change the set of distinct elements:
     assert set(sorted_list) == set(input_list)
 
-    # Regardless of input, each element in the sorted list should be lower or equal to the value that comes after it:
+    # Regardless of input, each element in the sorted list should be
+    # lower or equal to the value that comes after it:
     for i in range(len(sorted_list) - 1):
         assert sorted_list[i] <= sorted_list[i + 1]
 ```
