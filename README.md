@@ -84,13 +84,14 @@ While different, a property based test shares a lot with how an example based te
 | 3. Assert something about the result   | 3. Assert something about the result        |
 
 
-## Guarantee: Unexpected exceptions should never be thrown
+## Property: Unexpected exceptions should never be thrown
 One thing we got tested "for free" in the above `test_bubble_sort_properties` function, was that the code did not throw any exception. This property, that the code does not throw any exception (or more generally, only expected and documented exceptions), can be a convenient one to test, especially if the code has a lot of internal assertions.
 
 Let's test that the property that the [json.loads](https://docs.python.org/3/library/json.html#json.loads) function in the python standard library never throws any exception other than `json.JSONDecodeError` regardless of input:
 
 ```python
 @given(some.text())
+@example("[")
 def test_json_loads(input_string):
     try:
         json.loads(input_string)
@@ -98,7 +99,34 @@ def test_json_loads(input_string):
         return
 ```
 
-Running the test passes, so what we believe held up under test!
+Running the test passes, so what we believe held up under test! Note here that we have used a [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to make sure that a specific value is always tested - it's easy to mix a specific example into a property-based test.
+
+## Property: Symmetry, such as decoding an encoding value always brings back original
+Symmetry of certain operations, such the property that decoding an encoded value always brings back the original value, can sometimes be used. Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a python library for the [Base 32](https://www.crockford.com/base32.html) 
+
+```python
+@given(some.integers(min_value=0))
+def test_base32_crockford(input_int):
+      assert base32_crockford.decode(base32_crockford.encode(input_int)) == input_int
+```
+
+Since this decoding scheme only works for non-negative integers, we specify to the **generator** of input data to only generate integers with a minium value of zero: `some.integers(min_value=0)`.
+
+## Comparing with a correct value obtained through an inefficient or otherwise naive way
+Sometimes we can get the desired solution through a way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or requiring special dependencies that are not acceptable to install in production.
+
+For an example, consider counting the number of bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library, which we compare with a slow solution that converts the integer to a binary string and counting the occurences of the string "1" inside it, using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the standard python library:
+
+```python
+def count_bits_slow(input_int):
+    return bin(input_int).count("1")
+
+@pytest.mark.skip(reason="Avoid forcing to install gmpy2")
+@given(some.integers(min_value=0))
+def test_gmpy2_popcount(input_int):
+    assert count_bits_slow(input_int) == gmpy2.popcount(input_int)
+```
+
 
 ## Why use property based testing?
 - A computer can generate a lot more input than a human can.
@@ -113,6 +141,7 @@ Running the test passes, so what we believe held up under test!
 - **Property-based testing** 
 - **Preconditions**
 - **Postconditions**
+- **Generators**: The thing that generates input data, such as `some.lists(some.integers())`.
 - [...]
 
 
