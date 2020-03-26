@@ -29,7 +29,7 @@ def test_bubble_sort_example():
 ## Property based testing
 While great and simple, testing examples does just that: test examples that we have come up with! What if we want to test hundreds of test cases, possibly ones we could never dream of coming up with ourselves? How could we have saved the student records in the below example?
 
-![Bobby tables](https://imgs.xkcd.com/comics/exploits_of_a_mom.png)
+![Bobby tables comic about SQL injections](https://imgs.xkcd.com/comics/exploits_of_a_mom.png)
 
 **Property based testing** is a different approach here to help with that. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
 
@@ -86,6 +86,8 @@ While different, a property based test shares a lot with how an example based te
 
 ## Property: Unexpected exceptions should never be thrown
 One thing we got tested "for free" in the above `test_bubble_sort_properties` function, was that the code did not throw any exception. This property, that the code does not throw any exception (or more generally, only expected and documented exceptions), can be a convenient one to test, especially if the code has a lot of internal assertions.
+
+![Comic about computer complaining about segfaults](https://imgs.xkcd.com/comics/compiler_complaint.png)
 
 Let's test that the property that the [json.loads](https://docs.python.org/3/library/json.html#json.loads) function in the python standard library never throws any exception other than `json.JSONDecodeError` regardless of input:
 
