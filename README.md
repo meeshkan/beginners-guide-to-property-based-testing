@@ -158,6 +158,14 @@ def test_gmpy2_popcount(input_int):
 ## Meta: Running the tests
 Execute `make` to run the tests (it will setup a `venv` folder and install dependencies there). It will also format the code using [black](https://black.readthedocs.io/en/stable/) and [isort](https://timothycrosley.github.io/isort/) automatically.
 
+# Meta: Where to announce (and possibly ask for feedback):
+- https://hypothesis.readthedocs.io/en/latest/community.html mentions their IRC channel and mailing list.
+- https://reddit.com/r/programming and https://reddit.com/r/python perhaps?
+- https://twitter.com/meeshkanml
+- TODO
+
+
+
 # Meta: Various resources
 - https://hackage.haskell.org/package/QuickCheck
   - Early (1999) Haskell library.
