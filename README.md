@@ -132,13 +132,11 @@ def test_gmpy2_popcount(input_int):
 - A computer can generate a lot more input than a human can.
 - It forces you to reason and express at a higher level than individual examples. 
 
-## Why use example based testing?
-- Test cases using specific examples may in many cases be more readable.
-- Regression tests of specific bugs to prevent them from ever happening again.
+Note that property based testing does not replace example based testing, but rather complements it.
 
 ## Vocabulary
 - **Example-based testing** The traditional way of writing tests using examples.
-- **Property-based testing** 
+- **Property-based testing**  
 - **Preconditions**
 - **Postconditions**
 - **Generators**: The thing that generates input data, such as `some.lists(some.integers())`.
