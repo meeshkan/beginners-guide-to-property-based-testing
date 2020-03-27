@@ -219,7 +219,9 @@ But what about the future - how can we be sure that the problem never resurfaces
 Here we have used the [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to add a hard-coded example in addition to generated input.
 
 ## Libraries
-This article has been using the beautiful [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. Some alternatives for other languages are:
+This article has been using the beautiful [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. It has a lot of functionality not covered here and nicely written documentation, so be sure to check it out.
+
+Some alternatives for other languages are:
 
 - [fast-check](https://github.com/dubzzz/fast-check): TypeScript
 - [FsCheck](https://fscheck.github.io/FsCheck/): .NET
