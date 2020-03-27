@@ -198,17 +198,19 @@ Falsifying example: test_json5_loads(
 )
 ```
 
-We promptly [reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in the 0.9.4 version of the library.
+We promptly [reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in version 0.9.4 of the library.
 
 
 ## Libraries
 This article has been using the beautiful [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. Some alternatives for other languages are:
 
-- [QuickCheck](https://hackage.haskell.org/package/QuickCheck): Haskell
 - [fast-check](https://github.com/dubzzz/fast-check): TypeScript
-- [PropEr](https://proper-testing.github.io/): Erlang
-- [PropCheck](https://github.com/alfert/propcheck): Elixir
 - [FsCheck](https://fscheck.github.io/FsCheck/): .NET
+- [jqwik](https://jqwik.net/): Java
+- [PropCheck](https://github.com/alfert/propcheck): Elixir
+- [PropEr](https://proper-testing.github.io/): Erlang
+- [QuickCheck](https://hackage.haskell.org/package/QuickCheck): Haskell
+
 
 ## Follow us
 At [Meeshkan](https://meeshkan.com/) we are working on improving how people test systems. Follow us at https://twitter.com/meeshkanml or reach out to us on https://gitter.im/Meeshkan/community.
