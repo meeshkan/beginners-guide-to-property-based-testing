@@ -211,7 +211,7 @@ This article has been using the beautiful [Hypothesis](https://hypothesis.readth
 - [FsCheck](https://fscheck.github.io/FsCheck/): .NET
 
 ## Follow us
-At [Meeshkan](https://meeshkan.com/) we are working on improving how systems are tested. Follow us at https://twitter.com/meeshkanml or reach out to us on https://gitter.im/Meeshkan/community.
+At [Meeshkan](https://meeshkan.com/) we are working on improving how people test systems. Follow us at https://twitter.com/meeshkanml or reach out to us on https://gitter.im/Meeshkan/community.
 
 ## Why are you not using property based testing?
 Why are you not using property based testing? Interested in seeing another article expanding on the topic? Let us know in the comments!
