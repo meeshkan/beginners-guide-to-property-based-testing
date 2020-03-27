@@ -88,7 +88,7 @@ While different, a property based test shares a lot with how an example based te
 
 
 ## Property: Unexpected exceptions should never be thrown
-One thing we got tested "for free" in the above `test_bubble_sort_properties` function, was that the code did not throw any exception. This property, that the code does not throw any exception (or more generally, only expected and documented exceptions, and that it never segfaults) can be a convenient one to test, especially if the code has a lot of internal assertions.
+One thing we got tested "for free" in the above `test_bubble_sort_properties` function, was that the code did not throw any exception. This property - that the code does not throw any exception (or more generally, only expected and documented exceptions, and that it never segfaults) - can be a convenient one to test, especially if the code has a lot of internal assertions.
 
 ![Comic about computer complaining about segfaults](https://imgs.xkcd.com/comics/compiler_complaint.png)
 
