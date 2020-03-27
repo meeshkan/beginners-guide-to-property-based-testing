@@ -93,7 +93,6 @@ Let's test that the property that the [json.loads](https://docs.python.org/3/lib
 
 ```python
 @given(some.text())
-@example("[")
 def test_json_loads(input_string):
     try:
         json.loads(input_string)
@@ -104,7 +103,11 @@ def test_json_loads(input_string):
 Running the test passes, so what we believe held up under test! Note here that we have used a [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to make sure that a specific value is always tested - it's easy to mix a specific example into a property-based test.
 
 ## Property: Symmetry, such as decoding an encoding value always brings back original
-Symmetry of certain operations, such the property that decoding an encoded value always brings back the original value, can sometimes be used. Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a python library for the [Base 32](https://www.crockford.com/base32.html) 
+Symmetry of certain operations, such the property that decoding an encoded value always brings back the original value, can sometimes be used.
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Simetria-bilateria.svg/2560px-Simetria-bilateria.svg.png" alt="drawing" width="666" height="205"/>
+
+Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a python library for the [Base 32](https://www.crockford.com/base32.html) 
 
 ```python
 @given(some.integers(min_value=0))
@@ -123,37 +126,89 @@ For an example, consider counting the number of bits in an (arbitrary sized) int
 def count_bits_slow(input_int):
     return bin(input_int).count("1")
 
-@pytest.mark.skip(reason="Avoid forcing to install gmpy2")
 @given(some.integers(min_value=0))
+@settings(max_examples=500)
 def test_gmpy2_popcount(input_int):
     assert count_bits_slow(input_int) == gmpy2.popcount(input_int)
 ```
 
+For illustrative purposes we have here specified a [@settings(max_examples=500)](https://hypothesis.readthedocs.io/en/latest/settings.html) decorator to tweak the default number of input values to generate.
 
-## Why use property based testing?
-- A computer can generate a lot more input than a human can.
-- It forces you to reason and express at a higher level than individual examples. 
+# Finding an issue in the wild
+We haven't had a failing test yet - let's go hunting! The [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization might be a good fit (besides being a young project and therefore more likely to contain bugs):
 
-Note that property based testing does not replace example based testing, but rather complements it.
+- One **property** of JSON5 is that it is a superset of JSON.
+- Another **property** (which is true of most serialization formats) is that deserializing a serialized string should give us back the original object.
 
-## Vocabulary
-- **Example-based testing** The traditional way of writing tests using examples.
-- **Property-based testing**  
-- **Preconditions**
-- **Postconditions**
-- **Generators**: The thing that generates input data, such as `some.lists(some.integers())`.
-- [...]
+Let's use those properties in a test:
+
+```python
+import json
+from string import printable
+
+import hypothesis.strategies as some
+import json5
+from hypothesis import example, given, settings
+
+# Construct a generator for arbitrary objects to test serialistion on
+some_object = some.recursive(
+    some.none() | some.booleans() | some.floats(allow_nan=False) | some.text(printable),
+    lambda children: some.lists(children, min_size=1)
+    | some.dictionaries(some.text(printable), children, min_size=1),
+)
+
+
+@given(some_object)
+def test_json5_loads(input_object):
+    dumped_json_string = json.dumps(input_object)
+    dumped_json5_string = json5.dumps(input_object)
+
+    parsed_object_from_json = json5.loads(dumped_json_string)
+    parsed_object_from_json5 = json5.loads(dumped_json5_string)
+
+    assert parsed_object_from_json == input_object
+    assert parsed_object_from_json5 == input_object
+```
+
+After creating a `some_object` generator of arbitrary objects (see [the Hypothesis documentation](https://hypothesis.readthedocs.io/en/latest/data.html#recursive-data) for details) we verify aspects of the previosly mentiond properties, by serialising using both `json` and `json5`, then deserialising those two objects back using the `json5` library and asserting that the original object was obtained.
+
+Lo and behold - at the `json5.dumps(input_object)` statement we get an exception inside the internals of the `json5` library:
+
+```python
+    def _is_ident(k):
+        k = str(k)
+>       if not _is_id_start(k[0]) and k[0] not in (u'$', u'_'):
+E       IndexError: string index out of range
+```
+
+![Our testers found more bugs than our customers did](https://qph.fs.quoracdn.net/main-qimg-c1eb5bad58ac4d222c17196e0a8f2288)
+
+Besides showing the stack trace as usual, we also get an informative message showing the **hypothesis**, the example data:
+
+```
+------------- Hypothesis -------------
+Falsifying example: test_json5_loads(
+    input_object={'': 'hi'},
+)
+```
+
+We promptly [reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in the 0.9.4 version of the library.
 
 
 ## Libraries
+This article has been using the beautiful [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. Some alternatives for other languages are:
+
 - [QuickCheck](https://hackage.haskell.org/package/QuickCheck): Haskell
 - [fast-check](https://github.com/dubzzz/fast-check): TypeScript
-- [Hypothesis](https://hypothesis.readthedocs.io/en/latest/): Python (covered in this article)
-- Includes NumPy and Pandas tools!
 - [PropEr](https://proper-testing.github.io/): Erlang
 - [PropCheck](https://github.com/alfert/propcheck): Elixir
 - [FsCheck](https://fscheck.github.io/FsCheck/): .NET
 
+## Follow us
+Interested in more? Follow us at https://twitter.com/meeshkanml.
+
+## Why are you not using property based testing?
+Why are you not using property based testing? Let us know in the comments!
 
 ## Meta: Running the tests
 Execute `make` to run the tests (it will setup a `venv` folder and install dependencies there). It will also format the code using [black](https://black.readthedocs.io/en/stable/) and [isort](https://timothycrosley.github.io/isort/) automatically.
@@ -161,10 +216,9 @@ Execute `make` to run the tests (it will setup a `venv` folder and install depen
 # Meta: Where to announce (and possibly ask for feedback):
 - https://hypothesis.readthedocs.io/en/latest/community.html mentions their IRC channel and mailing list.
 - https://reddit.com/r/programming and https://reddit.com/r/python perhaps?
+- https://news.ycombinator.com/
 - https://twitter.com/meeshkanml
-- TODO
-
-
+- TODO: more.
 
 # Meta: Various resources
 - https://hackage.haskell.org/package/QuickCheck
