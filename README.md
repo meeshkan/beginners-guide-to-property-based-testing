@@ -40,6 +40,7 @@ Let's see an example using the [Hypothesis](https://hypothesis.readthedocs.io/en
 
 ```python
 import hypothesis.strategies as some
+from hypothesis import given
 
 # Guide the framework in what input we need:
 @given(input_list=some.lists(some.integers()))
