@@ -26,7 +26,7 @@ def test_bubble_sort_example():
     assert [1, 1, 3, 3, 5] == bubble_sort([1, 3, 1, 3, 5])
 ```
 
-Example based testing is a workhorse that most testing activities resolves and will continue to resolve around. But what about 
+Example based testing is and will continue to be the workhorse in automated software testing - but we will explore an additional technique that might enhance the test coverage of your code.
 
 ## Property based testing
 While great and simple, testing examples does just that: tests examples that we have come up with! What if we want to test hundreds (or millions) of test cases, possibly ones we could never dream of coming up with ourselves?
