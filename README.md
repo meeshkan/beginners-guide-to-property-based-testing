@@ -156,7 +156,7 @@ import hypothesis.strategies as some
 import json5
 from hypothesis import example, given, settings
 
-# Construct a generator for arbitrary objects to test serialistion on
+# Construct a generator of arbitrary objects to test serialization on:
 some_object = some.recursive(
     some.none() | some.booleans() | some.floats(allow_nan=False) | some.text(printable),
     lambda children: some.lists(children, min_size=1)
