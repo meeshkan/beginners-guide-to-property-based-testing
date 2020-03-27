@@ -189,7 +189,7 @@ E       IndexError: string index out of range
 
 ![Our testers found more bugs than our customers did](https://qph.fs.quoracdn.net/main-qimg-c1eb5bad58ac4d222c17196e0a8f2288)
 
-Besides showing the stack trace as usual, we also get an informative message showing the **hypothesis**, the example data:
+Besides showing the stack trace as usual, we also get an informative message showing the failed **hypothesis**, the generatted data causing our test to fail:
 
 ```
 ------------- Hypothesis -------------
