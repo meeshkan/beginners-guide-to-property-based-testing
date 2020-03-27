@@ -207,7 +207,7 @@ Falsifying example: test_json5_loads(
 )
 ```
 
-Using the `{'': None}` input data causing the issue we promptly [report](https://github.com/dpranke/pyjson5/issues/37) and [fix](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in version 0.9.4 of the library.
+Using the `{'': None}` input data causing the issue we promptly [reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in version 0.9.4 of the library.
 
 But what about the future - how can we be sure that the problem never resurfaces? While we saw that we currently generated input contained the troublesome input, we want to ensure that this input is always used, even in the face of someone tweaking the `some_object` generator or updating the version of the Hypothesis library used:
 
