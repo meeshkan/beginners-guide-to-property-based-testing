@@ -36,7 +36,7 @@ In other words: How could we have saved the student records in the below example
 **Property based testing** is a different approach here to help with that. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
 
 - You specify what input to generate.
-- You assert on guarantees (here after called **properties**) which are true regardless of exact input.
+- You assert on guarantees (hereafter called **properties**) which are true regardless of exact input.
 
 Let's see an example using the [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) test library:
 
