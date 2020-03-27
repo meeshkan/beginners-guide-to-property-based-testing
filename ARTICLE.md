@@ -185,7 +185,7 @@ def test_json5_loads(input_object):
     assert parsed_object_from_json5 == input_object
 ```
 
-After creating a `some_object` generator of arbitrary objects (see [the Hypothesis documentation](https://hypothesis.readthedocs.io/en/latest/data.html#recursive-data) for details) we verify aspects of the previously mentioned properties: We serialise the input using both `json` and `json5`, then deserialising those two objects back using the `json5` library and asserting that the original object was obtained.
+After creating a `some_object` generator of arbitrary objects (see [the Hypothesis documentation](https://hypothesis.readthedocs.io/en/latest/data.html#recursive-data) for details) we verify aspects of the previously mentioned properties: We serialize the input using both `json` and `json5`, then deserialise those two objects back using the `json5` library and asserting that the original object was obtained.
 
 Lo and behold - at the `json5.dumps(input_object)` statement we get an exception inside the internals of the `json5` library:
 
