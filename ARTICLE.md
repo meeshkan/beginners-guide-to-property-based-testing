@@ -1,4 +1,7 @@
 # Introduction to property based testing
+Mankind has evolved - perhaps it's time for how we test software to do as well?
+
+![Evolution of humans ending up with computer usage](https://1.bp.blogspot.com/-ORap0qe-_pY/UKzThN1i-EI/AAAAAAAAADA/_R7mblkESSw/s1600/evolution111.jpg)
 
 ## Example based testing
 Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
