@@ -6,7 +6,7 @@ This repository contains this README article introducing property-based testing 
 ## Example based testing
 Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
 
-Let's start with a toy example - a python `bubble_sort` function to sort a list of numbers (note: this is a toy example, use [list.sort()](https://docs.python.org/3/library/stdtypes.html#list.sort) in production):
+Let's start with a toy example - a python [bubble sort](https://en.wikipedia.org/wiki/Bubble_sort) function to sort a list of numbers (note: this is a toy example, use [list.sort()](https://docs.python.org/3/library/stdtypes.html#list.sort) in production):
 
 ```python
 def bubble_sort(nums):
