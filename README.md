@@ -210,6 +210,7 @@ This article has been using the beautiful [Hypothesis](https://hypothesis.readth
 - [PropCheck](https://github.com/alfert/propcheck): Elixir
 - [PropEr](https://proper-testing.github.io/): Erlang
 - [QuickCheck](https://hackage.haskell.org/package/QuickCheck): Haskell
+  - There is also a [port of QuickCheck to Rust](https://docs.rs/quickcheck/0.9.2/quickcheck/)
 
 
 ## Follow us
