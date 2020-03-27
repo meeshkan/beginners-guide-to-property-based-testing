@@ -26,6 +26,8 @@ def test_bubble_sort_example():
     assert [1, 1, 3, 3, 5] == bubble_sort([1, 3, 1, 3, 5])
 ```
 
+Example based testing is a workhorse that most testing activities resolves and will continue to resolve around. But what about 
+
 ## Property based testing
 While great and simple, testing examples does just that: tests examples that we have come up with! What if we want to test hundreds (or millions) of test cases, possibly ones we could never dream of coming up with ourselves?
 
@@ -106,7 +108,7 @@ def test_json_loads(input_string):
 Running the test passes, so what we believe held up under test!
 
 ## Property: Symmetry
-Symmetry of certain operations can sometimes be used. As an example, decoding an encoded value should almost always result in the original value.
+Symmetry of certain operations can sometimes be used, as in the property that decoding an encoded value always results in the original value.
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Simetria-bilateria.svg/2560px-Simetria-bilateria.svg.png" alt="drawing" width="666" height="205"/>
 
