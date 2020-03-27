@@ -236,8 +236,9 @@ Some alternatives for other languages are:
 - [jqwik](https://jqwik.net/): Java
 - [PropCheck](https://github.com/alfert/propcheck): Elixir
 - [PropEr](https://proper-testing.github.io/): Erlang
+- [RapidCheck](https://github.com/emil-e/rapidcheck): C++
 - [QuickCheck](https://hackage.haskell.org/package/QuickCheck): Haskell
-  - There is also a [port of QuickCheck to Rust](https://docs.rs/quickcheck/0.9.2/quickcheck/)
+- [QuickCheck ported to Rust](https://docs.rs/quickcheck/0.9.2/quickcheck/): Rust
 
 
 ## Follow us
