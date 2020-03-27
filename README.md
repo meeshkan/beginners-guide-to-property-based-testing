@@ -6,14 +6,14 @@ This repository contains the [article draft](ARTICLE.md) introducing property-ba
 ## Running the tests
 Execute `make` to run the tests (it will setup a `venv` folder and install dependencies there). It will also format the code using [black](https://black.readthedocs.io/en/stable/) and [isort](https://timothycrosley.github.io/isort/) automatically.
 
-#" Where to announce and ask for feedback
+## Where to announce and ask for feedback
 - https://hypothesis.readthedocs.io/en/latest/community.html mentions their IRC channel and mailing list.
 - https://reddit.com/r/programming and https://reddit.com/r/python perhaps?
 - https://news.ycombinator.com/
 - https://twitter.com/meeshkanml
 - TODO: more.
 
-#  Various resources
+## Various resources
 - https://hackage.haskell.org/package/QuickCheck
   - Early (1999) Haskell library.
   - https://jqwik.net/property-based-testing.html mentions it as "Quickcheck is the original tool for writing property tests."
