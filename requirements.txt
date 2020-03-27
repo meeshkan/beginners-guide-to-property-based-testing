@@ -1,5 +1,10 @@
+base32_crockford
 black
 flake8
 hypothesis
 isort
 pytest
+pyyaml
+json5
+# If you want the bug discovered:
+# json5==0.9.3

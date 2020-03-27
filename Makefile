@@ -3,7 +3,7 @@ test:
 	${MAKE} check
 
 check: venv/.requirements_installed
-	. venv/bin/activate; black --check .; isort --check-only; flake8 --exclude .git,venv,__pycache__,build,dist; pytest
+	. venv/bin/activate; black --check .; isort --check-only; flake8 --exclude .git,venv,__pycache__,build,dist; pytest --capture=no
 
 format: venv/.requirements_installed
 	. venv/bin/activate; isort -y; black .
