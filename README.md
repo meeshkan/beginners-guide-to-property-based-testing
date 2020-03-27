@@ -195,15 +195,28 @@ Besides showing the stack trace as usual, we also get an informative message sho
 ```
 ------------- Hypothesis -------------
 Falsifying example: test_json5_loads(
-    input_object={'': 'hi'},
+    input_object={'': None},
 )
 ```
 
-Using the We promptly [reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in version 0.9.4 of the library.
+Using the `{'': None}` input data causing the issue it was easy to promptly [report](https://github.com/dpranke/pyjson5/issues/37) and [fix](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in version 0.9.4 of the library.
 
-TODO: Note about adding @example
+But what about the future - how can we be sure that the problem never resurfaces? While we saw that we currently generated input contained the troublesome input, we want to ensure that this input is always used, even in the face of someone tweaking the `some_object` generator or updating the version of the Hypothesis library used:
 
-Note here that we have used a [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to make sure that a specific value is always tested - it's easy to mix a specific example into a property-based test.
+```diff
+--- test_json5_decode_orig.py	2020-03-27 09:48:24.000000000 +0100
++++ test_json5_decode.py	2020-03-27 09:48:32.000000000 +0100
+@@ -14,6 +14,7 @@
+ 
+ @given(some_object)
+ @settings(max_examples=500)
++@example({"": None})
+ def test_json5_loads(input_object):
+     dumped_json_string = json.dumps(input_object)
+     dumped_json5_string = json5.dumps(input_object)
+```
+
+Here we have used the [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to add a hard-coded example in addition to generated input.
 
 ## Libraries
 This article has been using the beautiful [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. Some alternatives for other languages are:
