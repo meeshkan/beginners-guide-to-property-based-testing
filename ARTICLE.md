@@ -29,7 +29,7 @@ def test_bubble_sort_example():
 ## Property based testing
 While great and simple, testing examples does just that: tests examples that we have come up with! What if we want to test hundreds (or millions) of test cases, possibly ones we could never dream of coming up with ourselves?
 
-In other words: How could we have saved the student records in the below example?
+In other words: How could we have saved the student records in the example below?
 
 ![Bobby tables comic about SQL injections](https://imgs.xkcd.com/comics/exploits_of_a_mom.png)
 
