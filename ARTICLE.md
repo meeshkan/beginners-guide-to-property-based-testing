@@ -1,5 +1,5 @@
 # Introduction to property based testing
-Mankind has evolved - perhaps it's time for how we test software to do as well?
+Mankind has evolved - perhaps it's time for how we test software to evolve as well?
 
 ![Evolution of humans ending up with computer usage](https://1.bp.blogspot.com/-ORap0qe-_pY/UKzThN1i-EI/AAAAAAAAADA/_R7mblkESSw/s1600/evolution111.jpg)
 
