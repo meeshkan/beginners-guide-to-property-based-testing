@@ -125,7 +125,7 @@ Sometimes we can get the desired solution through a naive, unpractical way that 
 
 ![From the Matrix movie: What if I told you.. You are absolutely correct](https://memes.ucoz.com/_nw/41/66267655.jpg)
 
-For an example, consider counting the number of bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library.
+For an example, consider counting the number of set bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library.
 
 Let's compare with a slower solution that converts the integer to a binary string (using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the standard library) and then counts the occurences of the string "1" inside it:
 
