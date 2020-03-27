@@ -143,7 +143,7 @@ def test_gmpy2_popcount(input_int):
 
 For illustrative purposes we have here specified a [@settings(max_examples=500)](https://hypothesis.readthedocs.io/en/latest/settings.html) decorator to tweak the default number of input values to generate.
 
-The test passes, showing that the optimized, hard to follow code of `gmpy2.popcount` gives the same results as our naive `count_bits_slow` function. Note that if this was the only reason to bring in gmpy2 as a dependency, it would be wise to benchmark if the performance improvements of it really would outweight the cost and weight of the dependency.
+The test passes - showing that the optimized, hard to follow code of `gmpy2.popcount` gives the same results as our slower but simpler `count_bits_slow` function. Note that if this was the only reason to bring in gmpy2 as a dependency, it would be wise to benchmark if the performance improvements of it really would outweight the cost and weight of the dependency.
 
 # Finding an issue in the wild
 We haven't had a failing test yet - let's go hunting!
