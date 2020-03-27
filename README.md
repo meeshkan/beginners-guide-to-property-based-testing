@@ -211,15 +211,15 @@ This article has been using the beautiful [Hypothesis](https://hypothesis.readth
 - [FsCheck](https://fscheck.github.io/FsCheck/): .NET
 
 ## Follow us
-Interested in more? Follow us at https://twitter.com/meeshkanml.
+At [Meeshkan](https://meeshkan.com/) we are working on improving how systems are tested. Follow us at https://twitter.com/meeshkanml or reach out to us on https://gitter.im/Meeshkan/community.
 
 ## Why are you not using property based testing?
-Why are you not using property based testing? Let us know in the comments!
+Why are you not using property based testing? Interested in seeing another article expanding on the topic? Let us know in the comments!
 
 ## Meta: Running the tests
 Execute `make` to run the tests (it will setup a `venv` folder and install dependencies there). It will also format the code using [black](https://black.readthedocs.io/en/stable/) and [isort](https://timothycrosley.github.io/isort/) automatically.
 
-# Meta: Where to announce (and possibly ask for feedback):
+# Meta: Where to announce and ask for feedback
 - https://hypothesis.readthedocs.io/en/latest/community.html mentions their IRC channel and mailing list.
 - https://reddit.com/r/programming and https://reddit.com/r/python perhaps?
 - https://news.ycombinator.com/
@@ -238,4 +238,3 @@ Execute `make` to run the tests (it will setup a `venv` folder and install depen
 - https://medium.com/criteo-labs/introduction-to-property-based-testing-f5236229d237
 - https://jqwik.net/property-based-testing.html
 - https://blog.ssanj.net/posts/2016-06-26-property-based-testing-patterns.html
-  - 
