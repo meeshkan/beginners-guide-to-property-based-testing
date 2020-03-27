@@ -118,11 +118,13 @@ def test_base32_crockford(input_int):
 Since this decoding scheme only works for non-negative integers, we specify to the **generator** of input data to only generate integers with a minium value of zero: `some.integers(min_value=0)`.
 
 ## Property: A naive method should still give the same result
-Sometimes we can get the desired solution through a naive way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or requiring special dependencies that are not acceptable to install in production.
+Sometimes we can get the desired solution through a naive, unpractical way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or it requiring special dependencies that are not acceptable to install in production.
 
 ![From the Matrix movie: What if I told you.. You are absolutely correct](https://memes.ucoz.com/_nw/41/66267655.jpg)
 
-For an example, consider counting the number of bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library, which we compare with a slow solution that converts the integer to a binary string and counting the occurences of the string "1" inside it, using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the standard python library:
+For an example, consider counting the number of bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library.
+
+Let's compare with a slower solution that converts the integer to a binary string (using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the standard library) and then counts the occurences of the string "1" inside it:
 
 ```python
 def count_bits_slow(input_int):
