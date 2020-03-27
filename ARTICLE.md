@@ -110,7 +110,7 @@ Symmetry of certain operations, such the property that decoding an encoded value
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Simetria-bilateria.svg/2560px-Simetria-bilateria.svg.png" alt="drawing" width="666" height="205"/>
 
-Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a python library for the [Base 32](https://www.crockford.com/base32.html) 
+Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a python library for the [Base32](https://www.crockford.com/base32.html) encoding format:
 
 ```python
 @given(some.integers(min_value=0))
