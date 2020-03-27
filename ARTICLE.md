@@ -105,8 +105,8 @@ def test_json_loads(input_string):
 
 Running the test passes, so what we believe held up under test!
 
-## Property: Symmetry, such as decoding an encoding value always brings back original
-Symmetry of certain operations, such the property that decoding an encoded value always brings back the original value, can sometimes be used.
+## Property: Symmetry
+Symmetry of certain operations can sometimes be used. As an example, decoding an encoded value should almost always result in the original value.
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Simetria-bilateria.svg/2560px-Simetria-bilateria.svg.png" alt="drawing" width="666" height="205"/>
 
