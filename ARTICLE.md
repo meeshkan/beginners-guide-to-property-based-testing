@@ -117,8 +117,8 @@ def test_base32_crockford(input_int):
 
 Since this decoding scheme only works for non-negative integers, we specify to the **generator** of input data to only generate integers with a minium value of zero: `some.integers(min_value=0)`.
 
-## Comparing with a correct value obtained another way
-Sometimes we can get the desired solution through a way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or requiring special dependencies that are not acceptable to install in production.
+## Property: A naive method should still give the same result
+Sometimes we can get the desired solution through a naive way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or requiring special dependencies that are not acceptable to install in production.
 
 ![From the Matrix movie: What if I told you.. You are absolutely correct](https://memes.ucoz.com/_nw/41/66267655.jpg)
 
