@@ -118,7 +118,7 @@ def test_base32_crockford(input_int):
       assert base32_crockford.decode(base32_crockford.encode(input_int)) == input_int
 ```
 
-Since this decoding scheme only works for non-negative integers, we specify to the **generator** of input data to only generate integers with a minium value of zero: `some.integers(min_value=0)`.
+Since this decoding scheme only works for non-negative integers, we specify to the **generation strategy** of input data to only generate integers with a minium value of zero: `some.integers(min_value=0)`. Once again the test passes.
 
 ## Property: A naive method should still give the same result
 Sometimes we can get the desired solution through a naive, unpractical way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or it requiring special dependencies that are not acceptable to install in production.
@@ -140,6 +140,8 @@ def test_gmpy2_popcount(input_int):
 ```
 
 For illustrative purposes we have here specified a [@settings(max_examples=500)](https://hypothesis.readthedocs.io/en/latest/settings.html) decorator to tweak the default number of input values to generate.
+
+The test passes, showing that the optimized, hard to follow code of `gmpy2.popcount` gives the same results as our naive `count_bits_slow` function. Note that if this was the only reason to bring in gmpy2 as a dependency, it would be wise to benchmark if the performance improvements of it really would outweight the cost and weight of the dependency.
 
 # Finding an issue in the wild
 We haven't had a failing test yet - let's go hunting!
