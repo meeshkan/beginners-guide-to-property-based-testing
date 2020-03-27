@@ -243,5 +243,5 @@ Some alternatives for other languages are:
 ## Follow us
 At [Meeshkan](https://meeshkan.com/) we are working on improving how people test systems. Follow us at https://twitter.com/meeshkanml or reach out to us on https://gitter.im/Meeshkan/community!
 
-## Why are you not using property based testing?
+## Questions
 Why are you not using property based testing? Interested in seeing another article expanding on the topic? Let us know in the comments!
