@@ -101,7 +101,7 @@ def test_json_loads(input_string):
         return
 ```
 
-Running the test passes, so what we believe held up under test! Note here that we have used a [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to make sure that a specific value is always tested - it's easy to mix a specific example into a property-based test.
+Running the test passes, so what we believe held up under test!
 
 ## Property: Symmetry, such as decoding an encoding value always brings back original
 Symmetry of certain operations, such the property that decoding an encoded value always brings back the original value, can sometimes be used.
@@ -199,8 +199,11 @@ Falsifying example: test_json5_loads(
 )
 ```
 
-We promptly [reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in version 0.9.4 of the library.
+Using the We promptly [reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in version 0.9.4 of the library.
 
+TODO: Note about adding @example
+
+Note here that we have used a [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to make sure that a specific value is always tested - it's easy to mix a specific example into a property-based test.
 
 ## Libraries
 This article has been using the beautiful [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. Some alternatives for other languages are:
