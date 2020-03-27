@@ -110,7 +110,7 @@ Running the test passes, so what we believe held up under test!
 ## Property: Symmetry
 Symmetry of certain operations can sometimes be used, as in the property that decoding an encoded value always results in the original value.
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Simetria-bilateria.svg/2560px-Simetria-bilateria.svg.png" alt="drawing" width="666" height="205"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Simetria-bilateria.svg/2560px-Simetria-bilateria.svg.png" alt="drawing" width="626" height="218"/>
 
 Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a python library for the [Base32](https://www.crockford.com/base32.html) encoding format:
 
