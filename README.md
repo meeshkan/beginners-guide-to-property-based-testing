@@ -117,8 +117,10 @@ def test_base32_crockford(input_int):
 
 Since this decoding scheme only works for non-negative integers, we specify to the **generator** of input data to only generate integers with a minium value of zero: `some.integers(min_value=0)`.
 
-## Comparing with a correct value obtained through an inefficient or otherwise naive way
+## Comparing with a correct value obtained another way
 Sometimes we can get the desired solution through a way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or requiring special dependencies that are not acceptable to install in production.
+
+![From the Matrix movie: What if I told you.. You are absolutely correct](https://memes.ucoz.com/_nw/41/66267655.jpg)
 
 For an example, consider counting the number of bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library, which we compare with a slow solution that converts the integer to a binary string and counting the occurences of the string "1" inside it, using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the standard python library:
 
@@ -135,7 +137,11 @@ def test_gmpy2_popcount(input_int):
 For illustrative purposes we have here specified a [@settings(max_examples=500)](https://hypothesis.readthedocs.io/en/latest/settings.html) decorator to tweak the default number of input values to generate.
 
 # Finding an issue in the wild
-We haven't had a failing test yet - let's go hunting! The [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization might be a good fit (besides being a young project and therefore more likely to contain bugs):
+We haven't had a failing test yet - let's go hunting!
+
+![Comic about debugging, an actual bug crawling out of a computer](https://img.devrant.com/devrant/rant/r_1495963_9LswA.jpg)
+
+The [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization might be a good fit (besides being a young project and therefore more likely to contain bugs):
 
 - One **property** of JSON5 is that it is a superset of JSON.
 - Another **property** (which is true of most serialization formats) is that deserializing a serialized string should give us back the original object.
