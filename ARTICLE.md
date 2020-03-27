@@ -1,4 +1,4 @@
-# Introduction to property-based testing
+# Introduction to property based testing
 
 ## Example based testing
 Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
