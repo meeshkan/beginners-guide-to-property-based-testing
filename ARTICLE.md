@@ -1,8 +1,6 @@
 # Introduction to property based testing
 Mankind has evolved - perhaps it's time for how we test software to evolve as well?
 
-![Evolution of humans ending up with computer usage](https://img.freepik.com/free-vector/human-evolution-from-monkey-businessman-computer-user-cartoon-vector-characters_53562-7997.jpg?size=626&ext=jpg)
-
 ## Example based testing
 Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
 
@@ -32,8 +30,6 @@ Example based testing is and will continue to be the workhorse in automated soft
 While great and simple, testing examples does just that: tests examples that we have come up with! What if we want to test hundreds (or millions) of test cases, possibly ones we could never dream of coming up with ourselves?
 
 In other words: How could we have saved the student records in the example below?
-
-![Bobby tables comic about SQL injections](https://imgs.xkcd.com/comics/exploits_of_a_mom.png)
 
 **Property based testing** is a different approach here to help with that. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
 
@@ -92,8 +88,6 @@ While different, a property based test shares a lot with how an example based te
 ## Property: Unexpected exceptions should never be thrown
 One thing we got tested "for free" in the above `test_bubble_sort_properties` function, was that the code did not throw any exception. This property - that the code does not throw any exception (or more generally, only expected and documented exceptions, and that it never segfaults) - can be a convenient one to test, especially if the code has a lot of internal assertions.
 
-![Comic about computer complaining about segfaults](https://imgs.xkcd.com/comics/compiler_complaint.png)
-
 Let's test that the property that the [json.loads](https://docs.python.org/3/library/json.html#json.loads) function in the python standard library never throws any exception other than `json.JSONDecodeError` regardless of input:
 
 ```python
@@ -110,8 +104,6 @@ Running the test passes, so what we believe held up under test!
 ## Property: Symmetry
 Symmetry of certain operations can sometimes be used, as in the property that decoding an encoded value always results in the original value.
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Simetria-bilateria.svg/2560px-Simetria-bilateria.svg.png" alt="drawing" width="626" height="218"/>
-
 Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a python library for the [Base32](https://www.crockford.com/base32.html) encoding format:
 
 ```python
@@ -124,8 +116,6 @@ Since this decoding scheme only works for non-negative integers, we specify to t
 
 ## Property: A naive method should still give the same result
 Sometimes we can get the desired solution through a naive, unpractical way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or it requiring special dependencies that are not acceptable to install in production.
-
-![From the Matrix movie: What if I told you.. You are absolutely correct](https://memes.ucoz.com/_nw/41/66267655.jpg)
 
 For an example, consider counting the number of set bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library.
 
@@ -147,8 +137,6 @@ The test passes - showing that the optimized, hard to follow code of `gmpy2.popc
 
 # Finding an issue in the wild
 We haven't had a failing test yet - let's go hunting!
-
-![Comic about debugging, an actual bug crawling out of a computer](https://img.devrant.com/devrant/rant/r_1495963_9LswA.jpg)
 
 The [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization might be a good fit (besides being a young project and therefore more likely to contain bugs):
 
@@ -195,8 +183,6 @@ Lo and behold - at the `json5.dumps(input_object)` statement we get an exception
 >       if not _is_id_start(k[0]) and k[0] not in (u'$', u'_'):
 E       IndexError: string index out of range
 ```
-
-![Our testers found more bugs than our customers did](https://qph.fs.quoracdn.net/main-qimg-c1eb5bad58ac4d222c17196e0a8f2288)
 
 Besides showing the stack trace as usual, we also get an informative message showing the failed **hypothesis**, the generated data causing our test to fail:
 
