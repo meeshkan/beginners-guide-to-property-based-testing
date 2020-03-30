@@ -1,9 +1,11 @@
 # Introduction to property based testing
 Mankind has evolved - perhaps it's time for how we test software to evolve as well?
 
+
+
 ![Evolution of humans ending up with computer usage](https://img.freepik.com/free-vector/human-evolution-from-monkey-businessman-computer-user-cartoon-vector-characters_53562-7997.jpg?size=626&ext=jpg)
 
-## Example based testing
+## Example based testing / Traditional unit tests based on examples / are example based 
 Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
 
 Let's start with a toy example - a python [bubble sort](https://en.wikipedia.org/wiki/Bubble_sort) function to sort a list of numbers (note: this is a toy example, use [list.sort()](https://docs.python.org/3/library/stdtypes.html#list.sort) in production):
@@ -27,6 +29,10 @@ def test_bubble_sort_example():
 ```
 
 Example based testing is and will continue to be the workhorse in automated software testing - but we will explore an additional technique that might enhance the test coverage of your code.
+
+## Limitations of example-based testing
+
+addressing those, code example? Use the list example to show the differences. 
 
 ## Property based testing
 While great and simple, testing examples does just that: tests examples that we have come up with! What if we want to test hundreds (or millions) of test cases, possibly ones we could never dream of coming up with ourselves?
@@ -86,8 +92,9 @@ While different, a property based test shares a lot with how an example based te
 | -------------------------------------- | ------------------------------------------- |
 | 1. Set up some data                    | 1. For all data matching some specification |
 | 2. Perform some operations on the data | 2. Perform some operations on the data      |
-| 3. Assert something about the result   | 3. Assert something about the result        |
+| 3. Assert something about the result   | 3. Assert properties about the result       |
 
+### What is a property? 
 
 ## Property: Unexpected exceptions should never be thrown
 One thing we got tested "for free" in the above `test_bubble_sort_properties` function, was that the code did not throw any exception. This property - that the code does not throw any exception (or more generally, only expected and documented exceptions, and that it never segfaults) - can be a convenient one to test, especially if the code has a lot of internal assertions.
@@ -145,12 +152,14 @@ For illustrative purposes we have here specified a [@settings(max_examples=500)]
 
 The test passes - showing that the optimized, hard to follow code of `gmpy2.popcount` gives the same results as our slower but simpler `count_bits_slow` function. Note that if this was the only reason to bring in gmpy2 as a dependency, it would be wise to benchmark if the performance improvements of it really would outweight the cost and weight of the dependency.
 
-# Finding an issue in the wild
-We haven't had a failing test yet - let's go hunting!
+# Finding an issue in the wild / Finding a bug in a real library (something like that)
+We haven't had a failing test yet - let's go hunting! 
+
+So far we've seen how to use it, but we haven't used it to find a bug. Let's put it use. 
 
 ![Comic about debugging, an actual bug crawling out of a computer](https://img.devrant.com/devrant/rant/r_1495963_9LswA.jpg)
 
-The [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization might be a good fit (besides being a young project and therefore more likely to contain bugs):
+The [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization might be a good fit (besides being a young project and therefore more likely to contain bugs - picked a project that's more likely to have a bug - if you took a random project, it's less likely that you'll uncover a bug - maybe remove):
 
 - One **property** of JSON5 is that it is a superset of JSON.
 - Another **property** (which is true of most serialization formats) is that deserializing a serialized string should give us back the original object.
