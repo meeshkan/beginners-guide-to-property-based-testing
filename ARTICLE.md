@@ -55,7 +55,7 @@ def sort_this_list(list):
 
 Now that we have our `sort_this_list` function, let's test it. 
 
-To test this using example-based testing, we need to provide the test function with results that we know will be `True`. For example, the list `[5, 3, 1, 4, 2]` should return `[1, 2, 3, 4, 5]` after it's sorted.
+To test this using example-based testing, we need to provide the test function with return values that we know will be `True`. For example, the list `[5, 3, 1, 4, 2]` should return `[1, 2, 3, 4, 5]` after it's sorted.
 
 ```python
 # Function that organizes list items in ascending order:
@@ -63,23 +63,53 @@ def sort_this_list(list):
     sorted_list = sorted(list)
     return sorted_list
 
-# Test for our function that uses two manually determined examples:
+# Test for our function that uses two manually determined return values:
 def test_sort_this_list():
-    assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5]
-    assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e']
+    assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] # True
+    assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] # True
 ```
 
 And with that, we have a passing example-based test 🎉
 
 ### Limitations of example-based testing
 
-<!-- Code using the list example to prove our point -->
+While example-based tests work well in many situations and provide an (arguably) low barrier of entry to testing, they do have downsides. Particularly that you have to manually create every return value - and you can only test as many values as you're willing to write. The less we write, the more likely it is that our tests miss catching bugs in our code.
 
-While great and simple, testing examples does just that: tests examples that we have come up with! What if we want to test hundreds (or millions) of test cases, possibly ones we could never dream of coming up with ourselves?
+To show why this could be a problem, let's look at the test for the `sort_this_list` function from earlier:
+
+<!-- I don't love this example, but I wanted to provide a code sample and ideally use the same list example from the last section to prove our point -->
+
+```python
+def test_sort_this_list():
+    assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] # True
+    assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] # True
+```
+
+Both of these assertions return `True`. So if you only tested these two values, you might believe that the `sort_this_list` function always returns the desired result.
+
+However, if we add a third value:
+
+```python
+def test_sort_this_list():
+    assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] 
+    assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] 
+    # Add a new test case:
+    assert sort_this_list(['a', 2, 'c', 3, 'b', 1]) == ['a', 'b', 'c', 1, 2, 3]
+```
+
+And then run the test... we hit an error:
+
+```bash
+TypeError: '<' not supported between instances of 'int' and 'str'
+```
+
+Looks like our `sort_this_list` function doesn't work properly when the list contains both integers and strings. Maybe you already knew that, but maybe we would've never known that without a specific test case. 
 
 Even with these limitations, example-based testing will continue to be the norm in software testing. Throughout the rest of this guide, though, we'll explore an additional technique designed to compliment your existing (likely example-based) tests and enhance the test coverage of your code.
 
 ## Introduction to property-based testing
+
+When we think about the limitations of example-based testing, many questions come to mind. What if we want to test hundreds (or millions) of test cases? Or possibly ones we could never dream of coming up with ourselves?
 
 **Property based testing** is a different approach here to help with that. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
 
