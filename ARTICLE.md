@@ -23,7 +23,7 @@ In this guide, we'll cover the fundamentals of property-based testing and how it
     - [Limitations of example-based testing](#limitations-of-example-based-testing)
 - [Introduction to property-based testing](#introduction-to-property-based-testing)
     - [An example using Hypothesis](#an-example-using-hypothesis)
-    - [What is a property anyway?](#what-is-a-property-anyway)
+    - [What can be a property?](#what-can-be-a-property)
     - [How does property-based testing differ from example-based?](#how-does-property-based-testing-differ-from-example-based)
 - [Example properties and how to test for them](#example-properties-and-how-to-test-for-them)
     - [Unexpected exceptions should never be thrown](#unexpected-exceptions-should-never-be-thrown)
@@ -75,9 +75,9 @@ And with that, we have a passing example-based test 🎉
 
 While example-based tests work well in many situations and provide an (arguably) low barrier of entry to testing, they do have downsides. Particularly that you have to manually create every return value - and you can only test as many values as you're willing to write. The less we write, the more likely it is that our tests miss catching bugs in our code.
 
-To show why this could be a problem, let's look at the test for the `sort_this_list` function from earlier:
+To show why this could be a problem, let's look at the test for the `sort_this_list` function from the last section:
 
-<!-- I don't love this example, but I wanted to provide a code sample and ideally use the same list example from the last section to prove our point -->
+<!-- I don't love this example, but I wanted to provide a code sample and ideally use the same list example from the last section to prove our point. We could also do something with integer vs float values 🤷‍♀️ -->
 
 ```python
 def test_sort_this_list():
@@ -103,35 +103,45 @@ And then run the test... we hit an error:
 TypeError: '<' not supported between instances of 'int' and 'str'
 ```
 
-Looks like our `sort_this_list` function doesn't work properly when the list contains both integers and strings. Maybe you already knew that, but maybe we would've never known that without a specific test case. 
+Turns out our `sort_this_list` function doesn't work properly when the list contains both integers and strings. Maybe you already knew that, but maybe we would've never known that without a specific test case. 
 
 Even with these limitations, example-based testing will continue to be the norm in software testing. Throughout the rest of this guide, though, we'll explore an additional technique designed to compliment your existing (likely example-based) tests and enhance the test coverage of your code.
 
 ## Introduction to property-based testing
 
-When we think about the limitations of example-based testing, many questions come to mind. What if we want to test hundreds (or millions) of test cases? Or possibly ones we could never dream of coming up with ourselves?
+When we think about the limitations of example-based testing, many questions come to mind. What if we want to test hundreds (or millions) of test cases? Or possibly ones we could never dream of coming up with ourselves? 
 
-**Property based testing** is a different approach here to help with that. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
+**Property-based testing** is a different approach here to help with that. With property-based testing, you don't generate the exact values manually. Instead, that is done by a computer automatically. 
 
-- You specify what input to generate.
-- You assert on guarantees (hereafter called **properties**) which are true regardless of exact input.
+As the developer, what you have to do is:
+
+- Specify what value to generate.
+- Assert on guarantees (or **properties**) that are true regardless of the exact value.
 
 ### An example using Hypothesis
 
-Let's see an example using the [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) test library:
+To put property-based testing into practice, let's look at an example using [Hypothesis](https://hypothesis.readthedocs.io/en/latest/), a Python library for generative test cases. We chose Hypothesis mostly because we're using Python - but also because the documentation is clear and thorough. 
+
+We'll use our `sort_this_list` function from earlier. As a reminder, here's what that looked like:
 
 ```python
+def sort_this_list(input_list):
+    sorted_list = sorted(input_list)
+    return sorted_list
+```
+
+Now let's write our property-based tests using Hypothesis. To limit the scope, we'll only test for lists of integers.
+
+```python
+# Including the necessary imports from Hypothesis
 import hypothesis.strategies as some
 from hypothesis import given
 
-# Guide the framework in what input we need:
+# Use the @given indicator to guide Hypothesis to what input value we need:
 @given(input_list=some.lists(some.integers()))
-def test_bubble_sort_properties(input_list):
-    input_list_copy = input_list.copy()
-    sorted_list = bubble_sort(input_list)
-
-    # Regardless of input, sorting should never change the original list:
-    assert input_list_copy == input_list
+def test_sort_this_list_properties(input_list):
+    sorted_list = sorted(input_list)
+    return sorted_list
 
     # Regardless of input, sorting should never change the size:
     assert len(sorted_list) == len(input_list)
@@ -145,9 +155,15 @@ def test_bubble_sort_properties(input_list):
         assert sorted_list[i] <= sorted_list[i + 1]
 ```
 
-Here we specify that we want lists of integers as input (using the [@given](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator) and **asserts on properties that are true regardless of the exact input**.
+What's especially important here is the use of the [@given](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator:
 
-If we peek on what input is generated by adding a `print(input_list)` statement, we can see 100 different generated input values (the number of runs and specifics of the generated data can be configured, more on that later on):
+```python
+@given(input_list=some.lists(some.integers()))
+```
+
+This specifies that we want a list of random integers as the input value and **asserts on properties that are true regardless of the exact input**.
+
+If we add a `print(input_list)` statement, we can peek at the _100 different generated input values_:
 
 ```
 []
@@ -158,19 +174,23 @@ If we peek on what input is generated by adding a `print(input_list)` statement,
 ...
 ```
 
-### What is a property anyway?
+The number of runs and specifics of the generated data can be configured. More on that later on.
+
+### What can be a property?
+
+<!-- Ugh I really want to add this section but struggling to figure out exactly what to say 😩 -->
 
 ### How does property-based testing differ from example-based?
 
-Property-based testing works well for particular cases. But so does example-based testing. So if you were worried that you were going to have to rewrite your entire test suite to implement property-based testing practices, take a breath - everything's ok. 
+While they originate from different concepts, a property-based test shares many characteristics with how an example-based test is written. This is illustrated in the following comparison of steps:
 
-While different, a property based test shares a lot with how an example based test is written, as illustrated in the following comparison of steps:
+| Example based                          | Property based                               |
+| -------------------------------------- | -------------------------------------------- |
+| 1. Set up some example data            | 1. Define data type matching a specification |
+| 2. Perform some operations on the data | 2. Perform some operations on the data       |
+| 3. Assert something about the result   | 3. Assert properties about the result        |
 
-| Example based                          | Property based                              |
-| -------------------------------------- | ------------------------------------------- |
-| 1. Set up some data                    | 1. For all data matching some specification |
-| 2. Perform some operations on the data | 2. Perform some operations on the data      |
-| 3. Assert something about the result   | 3. Assert properties about the result       |
+There are several instances where it would be worthwhile to use property-based testing. But the same can be said for example-based testing. They can, and very likely will, co-exist in the same codebase. So if you were stressed about having to rewrite your entire test suite to try out property-based testing, don't worry. We wouldn't recommend that. 
 
 ## Example properties and how to test for them
 
