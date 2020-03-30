@@ -12,7 +12,11 @@ tags:
 
 <!-- Any of this meta data can change, it's more about the formatting for now -->
 
+<!-- INTRODUCTION SENTENCE -->
 
+Maybe you've written unit tests before, but this is the first time you've heard about property-based testing. Or maybe you've heard the term, but still don't really get what it's about. Either way, we've got you. 
+
+In this guide, we'll cover the fundamentals of property-based testing and how it differs from traditional example-based testing practices. We'll walk you through practical examples of properties and how to write tests that address them. Finally, we'll learn how to use property-based testing to find bugs in our code and what existing libraries are out there. 
 
 ## What's in this guide
 - [Traditional unit tests based on examples](#traditional-unit-tests-based-on-examples)
@@ -30,10 +34,11 @@ tags:
 - [Conclusion](#conclusion)
 
 ⚠️ Prerequisites:
-- A general understanding of how software testing works
-- (Optional) [Python 3+](https://www.python.org/downloads/)
+<!-- It'd be great to link to a resource for learning about software testings, but I'm not sure which one would be the best 🤔 -->
+- A general understanding of how software testing works.
+- (Optional) [Python 3+](https://www.python.org/downloads/)* if you want to follow along in your own IDE. 
 
-The article will use python for examples, but come along even if you don't know it, the concepts are not tied to it.
+_* This guide will use Python for code examples, but the concepts aren't limited to Python specifically. So even if you don't know Python, we'd encourage you to read along anyway._
 
 ## Traditional unit tests based on examples
 Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
