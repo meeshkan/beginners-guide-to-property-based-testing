@@ -348,9 +348,9 @@ Bug found ✅ Bug fixed ✅ We're good to go 🎉
 
 ## Available libraries
 
-This article has been using the beautiful [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. It has a lot of functionality not covered here and nicely written documentation, so be sure to check it out.
+This guide has been using the [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. There's a lot of functionality that we haven't covered and, as previously mentioned, the documentation is well-written. So we'd recommmend checking it out if you're a Python user.
 
-Some alternatives for other languages are:
+There are also several other libraries built for property-based testing, in a vareity of languages. Here are some alternatives:
 
 - [fast-check](https://github.com/dubzzz/fast-check): TypeScript
 - [FsCheck](https://fscheck.github.io/FsCheck/): .NET
@@ -362,6 +362,7 @@ Some alternatives for other languages are:
 - [QuickCheck ported to Rust](https://docs.rs/quickcheck/0.9.2/quickcheck/): Rust
 
 ## Conclusion
+
 At [Meeshkan](https://meeshkan.com/) we are working on improving how people test systems. Follow us at https://twitter.com/meeshkanml or reach out to us on https://gitter.im/Meeshkan/community!
 
 Why are you not using property based testing? Interested in seeing another article expanding on the topic? Let us know in the comments!
