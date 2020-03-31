@@ -32,11 +32,14 @@ In this guide, we'll cover the fundamentals of property-based testing and how it
 - [Available libraries](#available-libraries)
 - [Conclusion](#conclusion)
 
-⚠️ Prerequisites:
-- A general understanding of how software testing works.
+⚠️ **Prerequisites**:
+- A general understanding of what unit tests are.
 - (Optional) [Python 3+](https://www.python.org/downloads/)* if you want to follow along in your own IDE. 
 
 _* This guide will use Python for code examples, but the concepts aren't limited to Python specifically. So even if you don't know Python, we'd encourage you to read along anyway._
+
+💻 **References**:
+We've created a [GitHub repository](github.com/meeshkan/introduction-to-property-based-testing) to accompany this guide. All of the featured code samples exist there as unit tests and include instructions for how to execute them.
 
 ## Traditional unit tests based on examples
 
@@ -47,8 +50,8 @@ Let's look at an example. Say we wanted to write a function called `sort_this_li
 It might look like the following:
 
 ```python
-def sort_this_list(list):
-    sorted_list = sorted(list)
+def sort_this_list(input_list):
+    sorted_list = sorted(input_list)
     return sorted_list
 ```
 
@@ -57,11 +60,6 @@ Now that we have our `sort_this_list` function, let's test it.
 To test this using example-based testing, we need to provide the test function with return values that we know will be `True`. For example, the list `[5, 3, 1, 4, 2]` should return `[1, 2, 3, 4, 5]` after it's sorted.
 
 ```python
-# Function that organizes list items in ascending order:
-def sort_this_list(list):
-    sorted_list = sorted(list)
-    return sorted_list
-
 # Test for our function that uses two manually determined return values:
 def test_sort_this_list():
     assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] # True
@@ -319,6 +317,8 @@ Falsifying example: test_json5_loads(
 ```
 
 Using the `{'': None}` input data caused [the issue that we promptly reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed the bug](https://github.com/dpranke/pyjson5/pull/38), which has since been released in version 0.9.4 of the json5 library.
+
+> We want to add that the fix was merged and released within 20 minutes of reporting. Very impressive work by json5 maintainer [@dpranke](https://github.com/dpranke) 👏
 
 But what about the future, how can we be sure that the problem never resurfaces? 
 
