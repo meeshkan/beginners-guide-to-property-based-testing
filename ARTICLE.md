@@ -10,9 +10,7 @@ tags:
   - python
 ---
 
-<!-- Any of this meta data can change, it's more about the formatting for now -->
-
-<!-- WRITE INTRODUCTION SENTENCE 🙆‍♀️ -->
+<!-- TODO: INTRODUCTION SENTENCE 🙆‍♀️ -->
 
 Maybe you've written unit tests before, but this is the first time you've heard about property-based testing. Or maybe you've heard the term, but still don't really get what it's about. Either way, we've got you. 
 
@@ -35,7 +33,6 @@ In this guide, we'll cover the fundamentals of property-based testing and how it
 - [Conclusion](#conclusion)
 
 ⚠️ Prerequisites:
-<!-- It'd be great to link to a resource for learning about software testings, but I'm not sure which one would be the best 🤔 -->
 - A general understanding of how software testing works.
 - (Optional) [Python 3+](https://www.python.org/downloads/)* if you want to follow along in your own IDE. 
 
@@ -78,8 +75,6 @@ And with that, we have a passing example-based test 🎉
 While example-based tests work well in many situations and provide an (arguably) low barrier of entry to testing, they do have downsides. Particularly that you have to manually create every return value - and you can only test as many values as you're willing to write. The less we write, the more likely it is that our tests miss catching bugs in our code.
 
 To show why this could be a problem, let's look at the test for the `sort_this_list` function from the last section:
-
-<!-- I don't love this example, but I wanted to provide a code sample and ideally use the same list example from the last section to prove our point. We could also do something with integer vs float values 🤷‍♀️ -->
 
 ```python
 def test_sort_this_list():
@@ -184,7 +179,7 @@ The number of runs and specifics of the generated data can be configured. More o
 
 ### What can be a property?
 
-<!-- Ugh I really want to add this section but struggling to figure out exactly what to say 😩 -->
+<!-- TODO: WRITE THIS 😩 -->
 
 ### How does property-based testing differ from example-based?
 
