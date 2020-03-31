@@ -12,9 +12,13 @@ tags:
 
 <!-- TODO: INTRODUCTION SENTENCE 🙆‍♀️ -->
 
+Normal “automated” software testing is surprisingly manual. Every scenario the computer runs, someone had to write by hand. Hypothesis can fix this.
+
+
+
 Maybe you've written unit tests before, but this is the first time you've heard about property-based testing. Or maybe you've heard the term, but still don't really get what it's about. Either way, we've got you. 
 
-In this guide, we'll cover the fundamentals of property-based testing and how it differs from traditional example-based testing practices. We'll walk you through practical examples of properties and how to write tests that address them. Finally, we'll learn how to use property-based testing to find bugs in our code and what existing libraries are out there. 
+Throughout this guide, we'll cover the fundamentals of property-based testing and how it differs from traditional example-based testing practices. We'll walk you through practical examples of properties and how to write tests that address them. Finally, we'll learn how to use property-based testing to find bugs in our code and what existing libraries are out there. 
 
 ## What's in this guide
 
@@ -357,8 +361,12 @@ There are also several other libraries built for property-based testing, in a va
 
 ## Conclusion
 
-<!-- TODO: FINISH THIS 😴 -->
+Example-based testing isn't going anywhere any time soon, but we hope that after reading this guide you're feeling motivated to incorporate some property-based tests into your codebase. 
 
-At [Meeshkan](https://meeshkan.com/) we are working on improving how people test systems. Follow us at https://twitter.com/meeshkanml or reach out to us on https://gitter.im/Meeshkan/community!
+Some lingering questions on our end...
 
-Why are you not using property based testing? Interested in seeing another article expanding on the topic? Let us know in the comments!
+- Why weren't you using property-based testing before?
+- After reading through this guide, would you be willing to try? 
+- Would you be interested in seeing another article expanding on the topic?
+
+At [Meeshkan](https://meeshkan.com/), we're working to improve how people test their products. So no matter if you loved or loathed this guide, we want to hear from you. Leave us a comment below, [tweet at us](https://twitter.com/meeshkanml) or [reach out on Gitter](https://gitter.im/Meeshkan/community) to let us know what you think.
