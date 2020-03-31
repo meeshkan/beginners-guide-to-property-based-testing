@@ -12,13 +12,14 @@ tags:
 
 <!-- Any of this meta data can change, it's more about the formatting for now -->
 
-<!-- INTRODUCTION SENTENCE -->
+<!-- WRITE INTRODUCTION SENTENCE 🙆‍♀️ -->
 
 Maybe you've written unit tests before, but this is the first time you've heard about property-based testing. Or maybe you've heard the term, but still don't really get what it's about. Either way, we've got you. 
 
 In this guide, we'll cover the fundamentals of property-based testing and how it differs from traditional example-based testing practices. We'll walk you through practical examples of properties and how to write tests that address them. Finally, we'll learn how to use property-based testing to find bugs in our code and what existing libraries are out there. 
 
 ## What's in this guide
+
 - [Traditional unit tests based on examples](#traditional-unit-tests-based-on-examples)
     - [Limitations of example-based testing](#limitations-of-example-based-testing)
 - [Introduction to property-based testing](#introduction-to-property-based-testing)
@@ -41,9 +42,10 @@ In this guide, we'll cover the fundamentals of property-based testing and how it
 _* This guide will use Python for code examples, but the concepts aren't limited to Python specifically. So even if you don't know Python, we'd encourage you to read along anyway._
 
 ## Traditional unit tests based on examples
+
 Most often, software testing is done using **example-based testing**. This means you test that for a given argument, you get a known return value. This return value is known because, well, you provided that value as a sample. So when the you run the function or test system, it then asserts the actual result against that sample return value.
 
-Let's look at an example. Say we wanted to write a function called `sort_this_list` that takes a [list](https://docs.python.org/3/tutorial/introduction.html#lists) as an argument and returns the same list organized in ascending order.
+Let's look at an example. Say we wanted to write a function called `sort_this_list` that takes a [list](https://docs.python.org/3/tutorial/introduction.html#lists) as an argument and returns the same list organized in ascending order. To do this, we'll use the built-in Python [`sorted`](https://docs.python.org/3/library/functions.html#sorted) function.
 
 It might look like the following:
 
@@ -130,10 +132,10 @@ def sort_this_list(input_list):
     return sorted_list
 ```
 
-Now let's write our property-based tests using Hypothesis. To limit the scope, we'll only test for lists of integers.
+Now let's write our property-based tests using Hypothesis. To limit the scope, we'll only test for lists of integers:
 
 ```python
-# Including the necessary imports from Hypothesis
+# test_sorted_list.py
 import hypothesis.strategies as some
 from hypothesis import given
 
@@ -154,6 +156,10 @@ def test_sort_this_list_properties(input_list):
     for i in range(len(sorted_list) - 1):
         assert sorted_list[i] <= sorted_list[i + 1]
 ```
+
+> If you're following along on your machine, make sure to install [Hypothesis](https://hypothesis.readthedocs.io/en/latest/quickstart.html#installing) and then you can run the tests using [pytest](https://pypi.org/project/pytest/).
+
+And there you have it, your first property-based test 🎉
 
 What's especially important here is the use of the [@given](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator:
 
@@ -194,12 +200,15 @@ There are several instances where it would be worthwhile to use property-based t
 
 ## Example properties and how to test for them
 
-<!-- Description of why we have these sections! -->
+By now, we've written our first property-based test. And while we're proud of our elegantly sorted lists, this example isn't representative of how you'd use property-based testing out in the real world. So we've gathered three example properties and in this section, we'll guide you through how they might be used to test our software.
+
+All of the examples will continue to use the [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) testing library and its [@given](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator.
 
 ### Unexpected exceptions should never be thrown
-One thing we got tested "for free" in the above `test_bubble_sort_properties` function, was that the code did not throw any exception. This property - that the code does not throw any exception (or more generally, only expected and documented exceptions, and that it never segfaults) - can be a convenient one to test, especially if the code has a lot of internal assertions.
 
-Let's test that the property that the [json.loads](https://docs.python.org/3/library/json.html#json.loads) function in the python standard library never throws any exception other than `json.JSONDecodeError` regardless of input:
+Something that was tested by default in the previous `test_sorted_list_properties` function was that the code didn't throw any exceptions. The fact that the code doesn't throw any exceptions (or more generally, only expected and documented exceptions, and that it never causes a segmentation fault) is a property. And this property can be a convenient one to test, especially if the code has a lot of internal assertions.
+
+As an example, we'll use the [`json.loads`](https://docs.python.org/3/library/json.html#json.loads) function from the Python standard library. Let's test that the `json.loads` function never throws any exceptions other than `json.JSONDecodeError` - regardless of input:
 
 ```python
 @given(some.text())
@@ -210,12 +219,13 @@ def test_json_loads(input_string):
         return
 ```
 
-Running the test passes, so what we believe held up under test!
+When we run our test file, it passes 🎉 So what we believed held up under testing!
 
 ### Values shouldn't change after encoding and then decoding
-Symmetry of certain operations can sometimes be used, as in the property that decoding an encoded value always results in the original value.
 
-Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a python library for the [Base32](https://www.crockford.com/base32.html) encoding format:
+A commonly tested property is called symmetry. Symmetry proves in certain operations that decoding an encoded value always results in the original value.
+
+Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a Python library for the [Base32](https://www.crockford.com/base32.html) encoding format:
 
 ```python
 @given(some.integers(min_value=0))
@@ -223,14 +233,17 @@ def test_base32_crockford(input_int):
       assert base32_crockford.decode(base32_crockford.encode(input_int)) == input_int
 ```
 
-Since this decoding scheme only works for non-negative integers, we specify to the **generation strategy** of input data to only generate integers with a minium value of zero: `some.integers(min_value=0)`. Once again the test passes.
+Because this decoding scheme only works for non-negative integers, we need to specify the _generation strategy_ of our input data. That's why we add `some.integers(min_value=0)` to our `@given` decorator - it restricts Hypothesis to only generate integers with a minium value of zero.
+
+Once again, the test passes 🎉
 
 ### A naive method should still give the same result
-Sometimes we can get the desired solution through a naive, unpractical way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or it requiring special dependencies that are not acceptable to install in production.
 
-For an example, consider counting the number of set bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library.
+Sometimes, we can get the desired solution through a naive, unpractical way that isn't acceptable to use in production code. This might be due to the execution time being too slow, memory consumption being too high or it requiring special dependencies that aren't acceptable to install in production.
 
-Let's compare with a slower solution that converts the integer to a binary string (using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the standard library) and then counts the occurences of the string "1" inside it:
+For example, consider counting the number of set bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library.
+
+Let's compare this with a slower solution that converts the integer to a binary string (using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the Python standard library) and then counts the occurences of the string `"1"` inside of it:
 
 ```python
 def count_bits_slow(input_int):
@@ -242,16 +255,21 @@ def test_gmpy2_popcount(input_int):
     assert count_bits_slow(input_int) == gmpy2.popcount(input_int)
 ```
 
-For illustrative purposes we have here specified a [@settings(max_examples=500)](https://hypothesis.readthedocs.io/en/latest/settings.html) decorator to tweak the default number of input values to generate.
+For illustrative purposes, we've also specified a [`@settings(max_examples=500)`](https://hypothesis.readthedocs.io/en/latest/settings.html) decorator to tweak the default number of input values to generate.
 
-The test passes - showing that the optimized, hard to follow code of `gmpy2.popcount` gives the same results as our slower but simpler `count_bits_slow` function. Note that if this was the only reason to bring in gmpy2 as a dependency, it would be wise to benchmark if the performance improvements of it really would outweight the cost and weight of the dependency.
+The test passes  🎉 - showing that the optimized, hard-to-follow code of `gmpy2.popcount` gives the same results as our slower but less complex `count_bits_slow` function. 
+
+Be sure to note that if this was the only reason to bring in gmpy2 as a dependency, it'd be wise to benchmark if the performance improvements of it really would outweight the cost and weight of the dependency.
 
 ## Finding bugs with property-based testing
-We haven't had a failing test yet - let's go hunting! 
 
-So far we've seen how to use it, but we haven't used it to find a bug. Let's put it use. 
+We've gone over the concepts of property-based testing and seen various properties in action - this is great. But one of the selling points of property-based tests is that they are supposed help us find more bugs. And we haven't found any bugs yet.
 
-The [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization might be a good fit (besides being a young project and therefore more likely to contain bugs - picked a project that's more likely to have a bug - if you took a random project, it's less likely that you'll uncover a bug - maybe remove):
+So let's go hunting. 
+
+For this example, we'll use the [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization. It's a bit niche, sure, but it's also a younger project. This means that we're more likely to uncover a bug compared to a more established library. 
+
+The json5 library contains: 
 
 - One **property** of JSON5 is that it is a superset of JSON.
 - Another **property** (which is true of most serialization formats) is that deserializing a serialized string should give us back the original object.
@@ -273,7 +291,6 @@ some_object = some.recursive(
     | some.dictionaries(some.text(printable), children, min_size=1),
 )
 
-
 @given(some_object)
 def test_json5_loads(input_object):
     dumped_json_string = json.dumps(input_object)
@@ -286,9 +303,9 @@ def test_json5_loads(input_object):
     assert parsed_object_from_json5 == input_object
 ```
 
-After creating a `some_object` generator of arbitrary objects (see [the Hypothesis documentation](https://hypothesis.readthedocs.io/en/latest/data.html#recursive-data) for details) we verify aspects of the previously mentioned properties: We serialize the input using both `json` and `json5`, then deserialise those two objects back using the `json5` library and asserting that the original object was obtained.
+After creating a `some_object` generator of [arbitrary objects](https://hypothesis.readthedocs.io/en/latest/data.html#recursive-data), we can verify aspects of the previously mentioned properties: We serialize the input using both `json` and `json5`. Then, we deserialize those two objects back using the `json5` library and assert that the original object was obtained.
 
-Lo and behold - at the `json5.dumps(input_object)` statement we get an exception inside the internals of the `json5` library:
+But we run into a problem. At the `json5.dumps(input_object)` statement, we get an exception inside the internals of the `json5` library:
 
 ```python
     def _is_ident(k):
@@ -297,18 +314,22 @@ Lo and behold - at the `json5.dumps(input_object)` statement we get an exception
 E       IndexError: string index out of range
 ```
 
-Besides showing the stack trace as usual, we also get an informative message showing the failed **hypothesis**, the generated data causing our test to fail:
+Besides showing the stack trace as usual, we also get an informative message showing the failed _hypothesis_ - or the generated data that caused our test to fail:
 
 ```
-<!-- ------------- Hypothesis ------------- -->
+# ------------- Hypothesis ------------- #
 Falsifying example: test_json5_loads(
     input_object={'': None},
 )
 ```
 
-Using the `{'': None}` input data causing the issue we promptly [reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in version 0.9.4 of the library.
+Using the `{'': None}` input data caused [the issue that we promptly reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed the bug](https://github.com/dpranke/pyjson5/pull/38), which has since been released in version 0.9.4 of the json5 library.
 
-But what about the future - how can we be sure that the problem never resurfaces? While we saw that we currently generated input contained the troublesome input, we want to ensure that this input is always used, even in the face of someone tweaking the `some_object` generator or updating the version of the Hypothesis library used:
+But what about the future, how can we be sure that the problem never resurfaces? 
+
+Because the data we are currently generating contained the troublesome input (`{'': None}`), we want to ensure that this input is always used. This should be true even if someone tweaks the `some_object` generator or updates the version of Hypothesis used.
+
+Here, we've used the [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to add a hard-coded example in addition to the generated input:
 
 ```diff
 --- test_json5_decode_orig.py	2020-03-27 09:48:24.000000000 +0100
@@ -323,9 +344,10 @@ But what about the future - how can we be sure that the problem never resurfaces
      dumped_json5_string = json5.dumps(input_object)
 ```
 
-Here we have used the [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to add a hard-coded example in addition to generated input.
+Bug found ✅ Bug fixed ✅ We're good to go 🎉
 
 ## Available libraries
+
 This article has been using the beautiful [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. It has a lot of functionality not covered here and nicely written documentation, so be sure to check it out.
 
 Some alternatives for other languages are:
