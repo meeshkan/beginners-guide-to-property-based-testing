@@ -10,11 +10,7 @@ tags:
   - python
 ---
 
-<!-- TODO: INTRODUCTION SENTENCE 🙆‍♀️ -->
-
-Normal “automated” software testing is surprisingly manual. Every scenario the computer runs, someone had to write by hand. Hypothesis can fix this.
-
-
+Testing your software takes time... a lot of time. When you're writing tests, you're often stuck trying to manually reproduce every potential sequence of events. But what if we want to test hundreds (or thousands or even millions) of cases at once? We have an answer: **Property-based testing**.
 
 Maybe you've written unit tests before, but this is the first time you've heard about property-based testing. Or maybe you've heard the term, but still don't really get what it's about. Either way, we've got you. 
 
@@ -43,7 +39,7 @@ Throughout this guide, we'll cover the fundamentals of property-based testing an
 _* This guide will use Python for code examples, but the concepts aren't limited to Python specifically. So even if you don't know Python, we'd encourage you to read along anyway._
 
 💻 **References**:
-We've created a [GitHub repository](github.com/meeshkan/introduction-to-property-based-testing) to accompany this guide. All of the featured code samples exist there as unit tests and include instructions for how to execute them.
+We've created a [GitHub repository](github.com/meeshkan/introduction-to-property-based-testing) to accompany this guide. All of the featured code examples exist there as unit tests and include instructions for how to execute them.
 
 ## Traditional unit tests based on examples
 
@@ -107,7 +103,7 @@ Even with these limitations, example-based testing will continue to be the norm 
 
 ## Introduction to property-based testing
 
-When we think about the limitations of example-based testing, many questions come to mind. What if we want to test hundreds (or millions) of test cases? Or possibly ones we could never dream of coming up with ourselves? 
+When we think about the limitations of example-based testing, many questions come to mind. What if we want to test hundreds of cases? Or possibly ones we could never dream of coming up with ourselves? 
 
 **Property-based testing** is a different approach here to help with that. With property-based testing, you don't generate the exact values manually. Instead, that is done by a computer automatically. 
 
@@ -186,8 +182,6 @@ Let's see this definition applied to assertion examples from the previous `test_
 	
 - `len(sorted_list) == len(input_list)`: The property tested here is the list length. The length of the sorted list is always the same as the original list (regardless of the specific `input_list` items).
 - `sorted_list[i] <= sorted_list[i + 1]`: This property was that each element of the sorted list is in ascending order. No matter the contents of the original list, this should be true. 
-
-we tested the property that (still, regardless of input list), each element of the returned list should be in an ascending order.
 
 ### How does property-based testing differ from example-based?
 
