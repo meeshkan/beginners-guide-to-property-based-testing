@@ -180,7 +180,14 @@ The number of runs and specifics of the generated data can be configured. More o
 
 ### What can be a property?
 
-<!-- TODO: WRITE THIS 😩 -->
+With this style of testing, a **property** is something that's true about the function being tested, regardless of the exact input. 
+
+Let's see this definition applied to assertion examples from the previous `test_sort_this_list_properties` function:
+	
+- `len(sorted_list) == len(input_list)`: The property tested here is the list length. The length of the sorted list is always the same as the original list (regardless of the specific `input_list` items).
+- `sorted_list[i] <= sorted_list[i + 1]`: This property was that each element of the sorted list is in ascending order. No matter the contents of the original list, this should be true. 
+
+we tested the property that (still, regardless of input list), each element of the returned list should be in an ascending order.
 
 ### How does property-based testing differ from example-based?
 
