@@ -60,7 +60,6 @@ Now that we have our `sort_this_list` function, let's test it.
 To test this using example-based testing, we need to provide the test function with return values that we know will be `True`. For example, the list `[5, 3, 1, 4, 2]` should return `[1, 2, 3, 4, 5]` after it's sorted.
 
 ```python
-# Test for our function that uses two manually determined return values:
 def test_sort_this_list():
     assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] # True
     assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] # True
@@ -232,7 +231,7 @@ Once again, the test passes 🎉
 
 ### A naive method should still give the same result
 
-Sometimes, we can get the desired solution through a naive, unpractical way that isn't acceptable to use in production code. This might be due to the execution time being too slow, memory consumption being too high or it requiring special dependencies that aren't acceptable to install in production.
+Sometimes, we can get the desired solution through a naive, unpractical way that isn't acceptable to use in production code. This might be due to the execution time being too slow, memory consumption being too high or it requiring specific dependencies that aren't acceptable to install in production.
 
 For example, consider counting the number of set bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library.
 
