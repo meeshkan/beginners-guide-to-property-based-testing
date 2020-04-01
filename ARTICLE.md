@@ -1,59 +1,147 @@
-# Introduction to property based testing
-Mankind has evolved - perhaps it's time for how we test software to evolve as well?
+---
+title: From 1 to 10,000 test cases in under an hour: A beginner's guide to property-based testing 
+description: This guide walks you through the what and why of property-based testing, with practical use cases and examples along the way. 
+authors: 
+  - Fredrik Fornwall
+  - Carolyn Stransky
+authorLink: 
+  - https://dev.to/fornwall
+  - https://twitter.com/carolstran
+tags:
+  - testing
+  - tutorial
+  - beginners
+  - python
+---
 
-![Evolution of humans ending up with computer usage](https://img.freepik.com/free-vector/human-evolution-from-monkey-businessman-computer-user-cartoon-vector-characters_53562-7997.jpg?size=626&ext=jpg)
+Testing your software takes time... a lot of time. When you're writing tests, you're often stuck trying to manually reproduce every potential sequence of events. But what if you wanted to test hundreds (or thousands or even millions) of cases at once? We have an answer: **Property-based testing**.
 
-## Example based testing
-Normally software testing is done through **example based testing**. A human writes one or several sample inputs to the function or system under test, runs the function or system, and then asserts on the result of that.
+Maybe you've written unit tests before, but this is the first time you've heard about property-based testing. Or maybe you've heard the term, but still don't really get what it's about. Either way, we've got you. 
 
-Let's start with a toy example - a python [bubble sort](https://en.wikipedia.org/wiki/Bubble_sort) function to sort a list of numbers (note: this is a toy example, use [list.sort()](https://docs.python.org/3/library/stdtypes.html#list.sort) in production):
+Throughout this guide, we'll cover the fundamentals of property-based testing. We'll walk you through practical examples and how to structure your tests. Finally, you'll learn how to use property-based testing to find bugs in your code and what existing libraries are out there.
+
+## What's in this guide
+
+- [Traditional unit tests based on examples](#traditional-unit-tests-based-on-examples)
+    - [Limitations of example-based testing](#limitations-of-example-based-testing)
+- [Introduction to property-based testing](#introduction-to-property-based-testing)
+    - [An example using Hypothesis](#an-example-using-hypothesis)
+    - [What can be a property?](#what-can-be-a-property)
+    - [How does property-based testing differ from example-based?](#how-does-property-based-testing-differ-from-example-based)
+- [Example properties and how to test for them](#example-properties-and-how-to-test-for-them)
+    - [Unexpected exceptions should never be thrown](#unexpected-exceptions-should-never-be-thrown)
+    - [Values shouldn't change after encoding and then decoding](#values-shouldnt-change-after-encoding-and-then-decoding)
+    - [A naive method should still give the same result](#a-naive-method-should-still-give-the-same-result)
+- [Finding bugs with property-based testing](#finding-bugs-with-property-based-testing)
+- [Available libraries](#available-libraries)
+- [Conclusion](#conclusion)
+
+⚠️ **Prerequisites**:
+- A general understanding of what unit tests are.
+- (Optional) [Python 3+](https://www.python.org/downloads/)* if you want to follow along in your own IDE. 
+
+_* This guide will use Python for code examples, but the concepts aren't limited to any specific programming language. So even if you don't know Python, we'd encourage you to read along anyway._
+
+💻 **References**:
+We've created a [GitHub repository](https://github.com/meeshkan/beginners-guide-to-property-based-testing) to go with this guide. All of the featured code examples exist there as unit tests and include instructions for how to execute them.
+
+## Traditional unit tests based on examples
+
+Most often, software testing is done using **example-based testing**. This means you test that for a given argument, you get a known return value. This return value is known because, well, you provided that exact value as a sample. So when you run the function or test system, it then asserts the actual result against that sample return value.
+
+Let's look at an example. Say you want to write a function called `sort_this_list`. This function will take a [list](https://docs.python.org/3/tutorial/introduction.html#lists) as an argument and return the same list organized in ascending order. To do this, you'll use the built-in Python [`sorted`](https://docs.python.org/3/library/functions.html#sorted) function.
+
+It might look like the following:
 
 ```python
-def bubble_sort(nums):
-    result = nums.copy()
-    swapped = True
-    while swapped:
-        swapped = False
-        for i in range(len(result) - 1):
-            if result[i] > result[i + 1]:
-                result[i], result[i + 1] = result[i + 1], result[i]
-                swapped = True
-    return result
-
-def test_bubble_sort_example():
-    # Test using two manually worked out examples:
-    assert [1, 2, 3, 4, 5] == bubble_sort([5, 3, 1, 4, 2])
-    assert [1, 1, 3, 3, 5] == bubble_sort([1, 3, 1, 3, 5])
+def sort_this_list(input_list):
+    sorted_list = sorted(input_list)
+    return sorted_list
 ```
 
-Example based testing is and will continue to be the workhorse in automated software testing - but we will explore an additional technique that might enhance the test coverage of your code.
+Now that you have your `sort_this_list` function, let's test it. 
 
-## Property based testing
-While great and simple, testing examples does just that: tests examples that we have come up with! What if we want to test hundreds (or millions) of test cases, possibly ones we could never dream of coming up with ourselves?
-
-In other words: How could we have saved the student records in the example below?
-
-![Bobby tables comic about SQL injections](https://imgs.xkcd.com/comics/exploits_of_a_mom.png)
-
-**Property based testing** is a different approach here to help with that. You yourself don't generate the exact input - that is done by by a computer automatically. What you as a developer do is:
-
-- You specify what input to generate.
-- You assert on guarantees (hereafter called **properties**) which are true regardless of exact input.
-
-Let's see an example using the [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) test library:
+To test this using example-based testing, you need to (manually) provide the test function with return values that you know will be `True`. For example, the list `[5, 3, 1, 4, 2]` should return `[1, 2, 3, 4, 5]` after it's sorted.
 
 ```python
+def test_sort_this_list():
+    assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] # True
+    assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] # True
+```
+
+And with that, you have a passing example-based test 🎉
+
+### Limitations of example-based testing
+
+While example-based tests work well in many situations and provide an (arguably) low barrier of entry to testing, they do have downsides. Particularly that you have to create every test case yourself - and you can only test as many cases as you're willing to write. The less you write, the more likely it is that your tests will miss catching bugs in your code.
+
+To show why this could be a problem, let's look at the test for the `sort_this_list` function from the last section:
+
+```python
+def test_sort_this_list():
+    assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] # True
+    assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] # True
+```
+
+Both of these assertions return `True`. So if you only tested these two values, you might believe that the `sort_this_list` function always returns the desired result.
+
+But if you add a third potential return value:
+
+```python
+def test_sort_this_list():
+    assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] 
+    assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] 
+    # Add a new test case:
+    assert sort_this_list(['a', 2, 'c', 3, 'b', 1]) == ['a', 'b', 'c', 1, 2, 3]
+```
+
+And then run the test... you'll hit an error:
+
+```bash
+TypeError: '<' not supported between instances of 'int' and 'str'
+```
+
+Turns out the `sort_this_list` function doesn't work as expected when the list contains both integers and strings. Maybe you already knew that, but maybe you would've never known that without a specific test case. 
+
+Even with these limitations, example-based testing will continue to be the norm in software testing. Throughout the rest of this guide, though, we'll explore another technique. One designed to compliment your existing (likely example-based) tests and improve the test coverage of your code.
+
+## Introduction to property-based testing
+
+When thinking about the limitations of example-based testing, many questions come to mind. What if you want to test hundreds of cases? Or ones that you could never dream of coming up with yourself? 
+
+**Property-based testing** is a different approach here to help with that. With property-based testing, you don't generate the exact values manually. Instead, that is done by a computer automatically. 
+
+As the developer, what you have to do is:
+
+- Specify what value to generate.
+- Assert on guarantees (or **properties**) that are true regardless of the exact value.
+
+### An example using Hypothesis
+
+To put property-based testing into practice, let's look at an example using [Hypothesis](https://hypothesis.readthedocs.io/en/latest/), a Python library for generative test cases. We chose Hypothesis mostly because we're using Python - but also because the documentation is clear and thorough. 
+
+Let's use the `sort_this_list` function from earlier. As a reminder, here's what that looked like:
+
+```python
+def sort_this_list(input_list):
+    sorted_list = sorted(input_list)
+    return sorted_list
+```
+
+Now let's write a property-based tests using Hypothesis. To limit the scope, you'll only test for lists of integers:
+
+```python
+# test_sorted_list.py
 import hypothesis.strategies as some
 from hypothesis import given
 
-# Guide the framework in what input we need:
+# Use the @given decorator to guide Hypothesis to the input value needed:
 @given(input_list=some.lists(some.integers()))
-def test_bubble_sort_properties(input_list):
-    input_list_copy = input_list.copy()
-    sorted_list = bubble_sort(input_list)
-
-    # Regardless of input, sorting should never change the original list:
-    assert input_list_copy == input_list
+# Use the @settings object to set the number of cases to run:
+@settings(max_examples=10000)
+def test_sort_this_list_properties(input_list):
+    sorted_list = sorted(input_list)
+    return sorted_list
 
     # Regardless of input, sorting should never change the size:
     assert len(sorted_list) == len(input_list)
@@ -67,9 +155,29 @@ def test_bubble_sort_properties(input_list):
         assert sorted_list[i] <= sorted_list[i + 1]
 ```
 
-Here we specify that we want lists of integers as input (using the [@given](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator) and **asserts on properties that are true regardless of the exact input**.
+> Note: If you're following along on your machine, make sure to install [Hypothesis](https://hypothesis.readthedocs.io/en/latest/quickstart.html#installing) and then you can run the tests using [pytest](https://pypi.org/project/pytest/).
 
-If we peek on what input is generated by adding a `print(input_list)` statement, we can see 100 different generated input values (the number of runs and specifics of the generated data can be configured, more on that later on):
+And there you have it, your first property-based test 🎉
+
+What's especially important here is the use of the [`@given`](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator:
+
+```python
+@given(input_list=some.lists(some.integers()))
+```
+
+This specifies that you want a list of random integers as the input value and **asserts on properties that are true regardless of the exact input**.
+
+Another significant feature of this test is the use of the [`@settings`](https://hypothesis.readthedocs.io/en/latest/settings.html#settings) object:
+
+```python
+@settings(max_examples=10000)
+```
+
+Here, it's using the [`max_examples`](https://hypothesis.readthedocs.io/en/latest/settings.html#hypothesis.settings.max_examples) setting to indicate the maximum number of satisfying test cases that will run before terminating. The default value is `100` and in this case, it's set to `10000`. 
+
+At first, running tens of thousands of test cases might feel excessive - but these numbers are reasonable in the property-based testing realm. Even the Hypothesis documentation recommends setting this value well above the default or else it may miss uncommon bugs.
+
+Going back to our example test, if you add a `print(input_list)` statement, you can peek at the _10,000 different generated input values_:
 
 ```
 []
@@ -80,21 +188,44 @@ If we peek on what input is generated by adding a `print(input_list)` statement,
 ...
 ```
 
-While different, a property based test shares a lot with how an example based test is written, as illustrated in the following comparison of steps:
+> Note: Your values will likely be different from our example - and that's ok. You also might not want to print 10,000 example lists - and that's ok too. You can take our word for it.
 
-| Example based                          | Property based                              |
-| -------------------------------------- | ------------------------------------------- |
-| 1. Set up some data                    | 1. For all data matching some specification |
-| 2. Perform some operations on the data | 2. Perform some operations on the data      |
-| 3. Assert something about the result   | 3. Assert something about the result        |
+The number of runs and specifics of the generated data can be configured. More on that later on.
 
+### What can be a property?
 
-## Property: Unexpected exceptions should never be thrown
-One thing we got tested "for free" in the above `test_bubble_sort_properties` function, was that the code did not throw any exception. This property - that the code does not throw any exception (or more generally, only expected and documented exceptions, and that it never segfaults) - can be a convenient one to test, especially if the code has a lot of internal assertions.
+With this style of testing, a **property** is something that's true about the function being tested, regardless of the exact input. 
 
-![Comic about computer complaining about segfaults](https://imgs.xkcd.com/comics/compiler_complaint.png)
+Let's see this definition applied to assertion examples from the previous `test_sort_this_list_properties` function:
+	
+- `len(sorted_list) == len(input_list)`: The property tested here is the list length. The length of the sorted list is always the same as the original list (regardless of the specific list items).
+- `sorted_list[i] <= sorted_list[i + 1]`: This property was that each element of the sorted list is in ascending order. No matter the contents of the original list, this should be true. 
 
-Let's test that the property that the [json.loads](https://docs.python.org/3/library/json.html#json.loads) function in the python standard library never throws any exception other than `json.JSONDecodeError` regardless of input:
+### How does property-based testing differ from example-based?
+
+While they're from different concepts, property-based tests share many characteristics with example-based tests. This is illustrated in the following comparison of steps you'd take to write a given test:
+
+| Example based                          | Property based                               |
+| -------------------------------------- | -------------------------------------------- |
+| 1. Set up some example data            | 1. Define data type matching a specification |
+| 2. Perform some operations on the data | 2. Perform some operations on the data       |
+| 3. Assert something about the result   | 3. Assert properties about the result        |
+
+There are several instances where it would be worthwhile to use property-based testing. But the same can be said for example-based testing. They can, and very likely will, co-exist in the same codebase. 
+
+So if you're stressed about having to rewrite your entire test suite to try out property-based testing, don't worry. We wouldn't recommend that. 
+
+## Example properties and how to test for them
+
+By now, we've written our first property-based test and many lists were sorted 🎉 But sorting lists isn't a representative example of how you'd use property-based testing in the real world. So we've gathered three example properties and in this section, we'll guide you through how they might be used to test our software.
+
+All of the examples will continue to use the [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) testing library and its [@given](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator.
+
+### Unexpected exceptions should never be thrown
+
+Something that was tested by default in the previous `test_sorted_list_properties` function was that the code didn't throw any exceptions. The fact that the code doesn't throw any exceptions (or more generally, only expected and documented exceptions, and that it never causes a segmentation fault) is a property. And this property can be a convenient one to test, especially if the code has a lot of internal assertions.
+
+As an example, let's use the [`json.loads`](https://docs.python.org/3/library/json.html#json.loads) function from the Python standard library. Then, let's test that the `json.loads` function never throws any exceptions other than `json.JSONDecodeError` - regardless of input:
 
 ```python
 @given(some.text())
@@ -105,14 +236,13 @@ def test_json_loads(input_string):
         return
 ```
 
-Running the test passes, so what we believe held up under test!
+When you run the test file, it passes 🎉 So what we believed held up under testing!
 
-## Property: Symmetry
-Symmetry of certain operations can sometimes be used, as in the property that decoding an encoded value always results in the original value.
+### Values shouldn't change after encoding and then decoding
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Simetria-bilateria.svg/2560px-Simetria-bilateria.svg.png" alt="drawing" width="626" height="218"/>
+A commonly tested property is called symmetry. Symmetry proves in certain operations that decoding an encoded value always results in the original value.
 
-Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a python library for the [Base32](https://www.crockford.com/base32.html) encoding format:
+Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a Python library for the [Base32](https://www.crockford.com/base32.html) encoding format:
 
 ```python
 @given(some.integers(min_value=0))
@@ -120,16 +250,17 @@ def test_base32_crockford(input_int):
       assert base32_crockford.decode(base32_crockford.encode(input_int)) == input_int
 ```
 
-Since this decoding scheme only works for non-negative integers, we specify to the **generation strategy** of input data to only generate integers with a minium value of zero: `some.integers(min_value=0)`. Once again the test passes.
+Because this decoding scheme only works for non-negative integers, you need to specify the _generation strategy_ of your input data. That's why, in this example, `some.integers(min_value=0)` is added to the `@given` decorator. It restricts Hypothesis to only generate integers with a minium value of zero.
 
-## Property: A naive method should still give the same result
-Sometimes we can get the desired solution through a naive, unpractical way that is not acceptable to use in production code: That might be due to execution time being to slow, memory consumption too high or it requiring special dependencies that are not acceptable to install in production.
+Once again, the test passes 🎉
 
-![From the Matrix movie: What if I told you.. You are absolutely correct](https://memes.ucoz.com/_nw/41/66267655.jpg)
+### A naive method should still give the same result
 
-For an example, consider counting the number of set bits in an (arbitrary sized) integer, where we have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library.
+Sometimes, you can get the desired solution through a naive, unpractical way that isn't acceptable to use in production code. This might be due to the execution time being too slow, memory consumption being too high or it requiring specific dependencies that aren't acceptable to install in production.
 
-Let's compare with a slower solution that converts the integer to a binary string (using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the standard library) and then counts the occurences of the string "1" inside it:
+For example, consider counting the number of set bits in an (arbitrary sized) integer, where you have an optimized solution from the [pygmp2](https://gmpy2.readthedocs.io/en/latest/) library.
+
+Let's compare this with a slower solution that converts the integer to a binary string (using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the Python standard library) and then counts the occurences of the string `"1"` inside of it:
 
 ```python
 def count_bits_slow(input_int):
@@ -141,19 +272,24 @@ def test_gmpy2_popcount(input_int):
     assert count_bits_slow(input_int) == gmpy2.popcount(input_int)
 ```
 
-For illustrative purposes we have here specified a [@settings(max_examples=500)](https://hypothesis.readthedocs.io/en/latest/settings.html) decorator to tweak the default number of input values to generate.
+For illustrative purposes, this example specifies a [`@settings(max_examples=500)`](https://hypothesis.readthedocs.io/en/latest/settings.html) decorator to tweak the default number of input values to generate.
 
-The test passes - showing that the optimized, hard to follow code of `gmpy2.popcount` gives the same results as our slower but simpler `count_bits_slow` function. Note that if this was the only reason to bring in gmpy2 as a dependency, it would be wise to benchmark if the performance improvements of it really would outweight the cost and weight of the dependency.
+The test passes  🎉 - showing that the optimized, hard-to-follow code of `gmpy2.popcount` gives the same results as the slower but less complex `count_bits_slow` function. 
 
-# Finding an issue in the wild
-We haven't had a failing test yet - let's go hunting!
+> Note: If this was the only reason to bring in gmpy2 as a dependency, it'd be wise to benchmark if the performance improvements of it really would outweigh the cost and weight of the dependency.
 
-![Comic about debugging, an actual bug crawling out of a computer](https://img.devrant.com/devrant/rant/r_1495963_9LswA.jpg)
+## Finding bugs with property-based testing
 
-The [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization might be a good fit (besides being a young project and therefore more likely to contain bugs):
+We've gone over the concepts of property-based testing and seen various properties in action - this is great. But one of the selling points of property-based tests is that they're supposed to help us find more bugs. And we haven't found any bugs yet.
+
+So let's go hunting. 
+
+For this example, let's use the [json5](https://pypi.org/project/json5/) library for [JSON5](https://json5.org/) serialization. It's a bit niche, sure, but it's also a younger project. This means that you're more likely to uncover a bug compared to a more established library. 
+
+The json5 library contains: 
 
 - One **property** of JSON5 is that it is a superset of JSON.
-- Another **property** (which is true of most serialization formats) is that deserializing a serialized string should give us back the original object.
+- Another **property** proving that deserializing a serialized string should give you back the original object.
 
 Let's use those properties in a test:
 
@@ -172,7 +308,6 @@ some_object = some.recursive(
     | some.dictionaries(some.text(printable), children, min_size=1),
 )
 
-
 @given(some_object)
 def test_json5_loads(input_object):
     dumped_json_string = json.dumps(input_object)
@@ -185,9 +320,9 @@ def test_json5_loads(input_object):
     assert parsed_object_from_json5 == input_object
 ```
 
-After creating a `some_object` generator of arbitrary objects (see [the Hypothesis documentation](https://hypothesis.readthedocs.io/en/latest/data.html#recursive-data) for details) we verify aspects of the previously mentioned properties: We serialize the input using both `json` and `json5`, then deserialise those two objects back using the `json5` library and asserting that the original object was obtained.
+After creating a `some_object` generator of [arbitrary objects](https://hypothesis.readthedocs.io/en/latest/data.html#recursive-data), you can verify aspects of the previously mentioned properties: You serialize the input using both `json` and `json5`. Then, you deserialize those two objects back using the `json5` library and assert that the original object was obtained.
 
-Lo and behold - at the `json5.dumps(input_object)` statement we get an exception inside the internals of the `json5` library:
+But doing this, you'll run into a problem. At the `json5.dumps(input_object)` statement, you get an exception inside the internals of the `json5` library:
 
 ```python
     def _is_ident(k):
@@ -196,20 +331,24 @@ Lo and behold - at the `json5.dumps(input_object)` statement we get an exception
 E       IndexError: string index out of range
 ```
 
-![Our testers found more bugs than our customers did](https://qph.fs.quoracdn.net/main-qimg-c1eb5bad58ac4d222c17196e0a8f2288)
-
-Besides showing the stack trace as usual, we also get an informative message showing the failed **hypothesis**, the generated data causing our test to fail:
+Besides showing the stack trace, as usual, you also get an informative message showing the failed _hypothesis_ - otherwise known as the generated data that caused the test to fail:
 
 ```
-------------- Hypothesis -------------
+# ------------- Hypothesis ------------- #
 Falsifying example: test_json5_loads(
     input_object={'': None},
 )
 ```
 
-Using the `{'': None}` input data causing the issue we promptly [reported](https://github.com/dpranke/pyjson5/issues/37) and [fixed](https://github.com/dpranke/pyjson5/pull/38) the bug, which has since been released in version 0.9.4 of the library.
+Using the `{'': None}` input data caused [the issue that was promptly reported](https://github.com/dpranke/pyjson5/issues/37). Finding the issue led to [fixing the bug](https://github.com/dpranke/pyjson5/pull/38). This fix has since been released in version 0.9.4 of the json5 library.
 
-But what about the future - how can we be sure that the problem never resurfaces? While we saw that we currently generated input contained the troublesome input, we want to ensure that this input is always used, even in the face of someone tweaking the `some_object` generator or updating the version of the Hypothesis library used:
+> We want to add that the fix was merged and released within 20 minutes of reporting. Very impressive work by json5 maintainer [@dpranke](https://github.com/dpranke) 👏
+
+But what about the future, how can you be sure that the problem will never resurface? 
+
+Because the data currently generated contains the troublesome input (`{'': None}`), you want to ensure that this input is always used. This should be true even if someone tweaks the `some_object` generator or updates the version of Hypothesis used.
+
+The following fix uses the [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to add a hard-coded example to the generated input:
 
 ```diff
 --- test_json5_decode_orig.py	2020-03-27 09:48:24.000000000 +0100
@@ -224,12 +363,13 @@ But what about the future - how can we be sure that the problem never resurfaces
      dumped_json5_string = json5.dumps(input_object)
 ```
 
-Here we have used the [@example](https://hypothesis.readthedocs.io/en/latest/reproducing.html#hypothesis.example) decorator to add a hard-coded example in addition to generated input.
+Bug found ✅ Bug fixed ✅ You're good to go 🎉
 
-## Libraries
-This article has been using the beautiful [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. It has a lot of functionality not covered here and nicely written documentation, so be sure to check it out.
+## Available libraries
 
-Some alternatives for other languages are:
+This guide uses the [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) library for Python. But there's a lot of functionality that wasn't covered and, as previously mentioned, the documentation is nice. We'd recommend checking it out if you're a Python user.
+
+If you're not using Python, no problem. There are several other libraries built for property-based testing, in a variety of languages:
 
 - [fast-check](https://github.com/dubzzz/fast-check): TypeScript
 - [FsCheck](https://fscheck.github.io/FsCheck/): .NET
@@ -240,9 +380,14 @@ Some alternatives for other languages are:
 - [QuickCheck](https://hackage.haskell.org/package/QuickCheck): Haskell
 - [QuickCheck ported to Rust](https://docs.rs/quickcheck/0.9.2/quickcheck/): Rust
 
+## Conclusion
 
-## Follow us
-At [Meeshkan](https://meeshkan.com/) we are working on improving how people test systems. Follow us at https://twitter.com/meeshkanml or reach out to us on https://gitter.im/Meeshkan/community!
+Example-based testing isn't going anywhere any time soon. But we hope that, after reading this guide, you're motivated to incorporate some property-based tests into your codebase. 
 
-## Questions
-Why are you not using property based testing? Interested in seeing another article expanding on the topic? Let us know in the comments!
+Some lingering questions from us...
+
+- Why weren't you using property-based testing before?
+- After reading through this guide, would you be willing to try? 
+- Would you be interested in seeing another article expanding on the topic?
+
+At [Meeshkan](https://meeshkan.com/), we're working to improve how people test their products. So no matter if you loved or loathed this guide, we want to hear from you. Leave us a comment below, [tweet at us](https://twitter.com/meeshkanml) or [reach out on Gitter](https://gitter.im/Meeshkan/community) to let us know what you think.
