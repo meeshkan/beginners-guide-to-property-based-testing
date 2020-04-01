@@ -39,7 +39,7 @@ Throughout this guide, we'll cover the fundamentals of property-based testing. W
 _* This guide will use Python for code examples, but the concepts aren't limited to any specific programming language. So even if you don't know Python, we'd encourage you to read along anyway._
 
 💻 **References**:
-We've created a [GitHub repository](github.com/meeshkan/introduction-to-property-based-testing) to go with this guide. All of the featured code examples exist there as unit tests and include instructions for how to execute them.
+We've created a [GitHub repository](https://github.com/meeshkan/beginners-guide-to-property-based-testing) to go with this guide. All of the featured code examples exist there as unit tests and include instructions for how to execute them.
 
 ## Traditional unit tests based on examples
 
