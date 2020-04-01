@@ -131,8 +131,10 @@ Now let's write a property-based tests using Hypothesis. To limit the scope, you
 import hypothesis.strategies as some
 from hypothesis import given
 
-# Use the @given indicator to guide Hypothesis to the input value needed:
+# Use the @given decorator to guide Hypothesis to the input value needed:
 @given(input_list=some.lists(some.integers()))
+# Use the @settings object to set the number of cases to run:
+@settings(max_examples=10000)
 def test_sort_this_list_properties(input_list):
     sorted_list = sorted(input_list)
     return sorted_list
@@ -153,7 +155,7 @@ def test_sort_this_list_properties(input_list):
 
 And there you have it, your first property-based test 🎉
 
-What's especially important here is the use of the [@given](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator:
+What's especially important here is the use of the [`@given`](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator:
 
 ```python
 @given(input_list=some.lists(some.integers()))
@@ -161,7 +163,17 @@ What's especially important here is the use of the [@given](https://hypothesis.r
 
 This specifies that you want a list of random integers as the input value and **asserts on properties that are true regardless of the exact input**.
 
-If you add a `print(input_list)` statement, you can peek at the _100 different generated input values_:
+Another significant feature of this test is the use of the [`@settings`](https://hypothesis.readthedocs.io/en/latest/settings.html#settings) object:
+
+```python
+@settings(max_examples=10000)
+```
+
+Here, it's using the [`max_examples`](https://hypothesis.readthedocs.io/en/latest/settings.html#hypothesis.settings.max_examples) setting to indicate the maximum number of satisfying test cases that will run before terminating. The default value is `100` and in this case, it's set to `10000`. 
+
+At first, running tens of thousands of test cases might feel excessive - but these numbers are reasonable in the property-based testing realm. Even the Hypothesis documentation recommends setting this value well above the default or else it may miss uncommon bugs.
+
+Going back to our example test, if you add a `print(input_list)` statement, you can peek at the _10,000 different generated input values_:
 
 ```
 []
@@ -172,7 +184,7 @@ If you add a `print(input_list)` statement, you can peek at the _100 different g
 ...
 ```
 
-> Note: Your values will likely be different from our example - and that's ok.
+> Note: Your values will likely be different from our example - and that's ok. You also might not want to print 10,000 example lists - and that's ok too. You can take our word for it.
 
 The number of runs and specifics of the generated data can be configured. More on that later on.
 

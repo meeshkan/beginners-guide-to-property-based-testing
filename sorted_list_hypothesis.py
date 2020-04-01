@@ -1,8 +1,10 @@
 import hypothesis.strategies as some
 from hypothesis import given
 
-# Use the @given indicator to guide Hypothesis to what input value we need:
+# Use the @given decorator to guide Hypothesis to the input value needed:
 @given(input_list=some.lists(some.integers()))
+# Use the @settings object to set the number of cases to run:
+@settings(max_examples=10000)
 def test_sort_this_list_properties(input_list):
     sorted_list = sorted(input_list)
 
