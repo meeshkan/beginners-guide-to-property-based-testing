@@ -1,5 +1,5 @@
 ---
-title: From 10 to 1,000,000 test cases in under an hour: A beginner's guide to property-based testing 
+title: From 1 to 10,000 test cases in under an hour: A beginner's guide to property-based testing 
 description: This guide walks you through the what and why of property-based testing, with practical use cases and examples along the way. 
 author: Fredrik Fornwall
 authorLink: https://dev.to/fornwall
