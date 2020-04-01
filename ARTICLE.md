@@ -54,6 +54,7 @@ Let's look at an example. Say you want to write a function called `sort_this_lis
 It might look like the following:
 
 ```python
+# test_sorted_list.py
 def sort_this_list(input_list):
     sorted_list = sorted(input_list)
     return sorted_list
@@ -64,6 +65,7 @@ Now that you have your `sort_this_list` function, let's test it.
 To test this using example-based testing, you need to (manually) provide the test function with return values that you know will be `True`. For example, the list `[5, 3, 1, 4, 2]` should return `[1, 2, 3, 4, 5]` after it's sorted.
 
 ```python
+# test_sorted_list.py
 def test_sort_this_list():
     assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] # True
     assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] # True
@@ -78,6 +80,7 @@ While example-based tests work well in many situations and provide an (arguably)
 To show why this could be a problem, let's look at the test for the `sort_this_list` function from the last section:
 
 ```python
+# test_sorted_list.py
 def test_sort_this_list():
     assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] # True
     assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] # True
@@ -88,6 +91,7 @@ Both of these assertions return `True`. So if you only tested these two values, 
 But if you add a third potential return value:
 
 ```python
+# test_sorted_list.py
 def test_sort_this_list():
     assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5] 
     assert sort_this_list(['a', 'd', 'c', 'e', 'b']) == ['a', 'b', 'c', 'd', 'e'] 
@@ -123,6 +127,7 @@ To put property-based testing into practice, let's look at an example using [Hyp
 Let's use the `sort_this_list` function from earlier. As a reminder, here's what that looked like:
 
 ```python
+# test_sorted_list.py
 def sort_this_list(input_list):
     sorted_list = sorted(input_list)
     return sorted_list
@@ -133,7 +138,7 @@ Now let's write a property-based tests using Hypothesis. To limit the scope, you
 ```python
 # test_sorted_list.py
 import hypothesis.strategies as some
-from hypothesis import given
+from hypothesis import given, settings
 
 # Use the @given decorator to guide Hypothesis to the input value needed:
 @given(input_list=some.lists(some.integers()))
@@ -177,7 +182,7 @@ Here, it's using the [`max_examples`](https://hypothesis.readthedocs.io/en/lates
 
 At first, running tens of thousands of test cases might feel excessive - but these numbers are reasonable in the property-based testing realm. Even the Hypothesis documentation recommends setting this value well above the default or else it may miss uncommon bugs.
 
-Going back to our example test, if you add a `print(input_list)` statement, you can peek at the _10,000 different generated input values_:
+Going back to the example test, if you add a `print(input_list)` statement, you can peek at the _10,000 different generated input values_:
 
 ```
 []
@@ -217,7 +222,7 @@ So if you're stressed about having to rewrite your entire test suite to try out 
 
 ## Example properties and how to test for them
 
-By now, we've written our first property-based test and many lists were sorted 🎉 But sorting lists isn't a representative example of how you'd use property-based testing in the real world. So we've gathered three example properties and in this section, we'll guide you through how they might be used to test our software.
+By now, you've written your first property-based test and many lists were sorted 🎉 But sorting lists isn't a representative example of how you'd use property-based testing in the real world. So we've gathered three example properties and in this section, we'll guide you through how they might be used to test software.
 
 All of the examples will continue to use the [Hypothesis](https://hypothesis.readthedocs.io/en/latest/) testing library and its [@given](https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.given) function decorator.
 
@@ -228,6 +233,7 @@ Something that was tested by default in the previous `test_sorted_list_propertie
 As an example, let's use the [`json.loads`](https://docs.python.org/3/library/json.html#json.loads) function from the Python standard library. Then, let's test that the `json.loads` function never throws any exceptions other than `json.JSONDecodeError` - regardless of input:
 
 ```python
+# test_json_decode.py
 @given(some.text())
 def test_json_loads(input_string):
     try:
@@ -236,7 +242,7 @@ def test_json_loads(input_string):
         return
 ```
 
-When you run the test file, it passes 🎉 So what we believed held up under testing!
+When you run the test file, it passes 🎉 So the beliefs held up under testing!
 
 ### Values shouldn't change after encoding and then decoding
 
@@ -245,6 +251,7 @@ A commonly tested property is called symmetry. Symmetry proves in certain operat
 Let's apply it to [base32-crockford](https://github.com/jbittel/base32-crockford), a Python library for the [Base32](https://www.crockford.com/base32.html) encoding format:
 
 ```python
+# test_base32_crockford.py
 @given(some.integers(min_value=0))
 def test_base32_crockford(input_int):
       assert base32_crockford.decode(base32_crockford.encode(input_int)) == input_int
@@ -263,6 +270,7 @@ For example, consider counting the number of set bits in an (arbitrary sized) in
 Let's compare this with a slower solution that converts the integer to a binary string (using the [bin](https://docs.python.org/3/library/functions.html#bin) function in the Python standard library) and then counts the occurences of the string `"1"` inside of it:
 
 ```python
+# test_gmpy_popcount.py
 def count_bits_slow(input_int):
     return bin(input_int).count("1")
 
@@ -294,6 +302,7 @@ The json5 library contains:
 Let's use those properties in a test:
 
 ```python
+# test_json5_decode.py
 import json
 from string import printable
 
@@ -324,7 +333,7 @@ After creating a `some_object` generator of [arbitrary objects](https://hypothes
 
 But doing this, you'll run into a problem. At the `json5.dumps(input_object)` statement, you get an exception inside the internals of the `json5` library:
 
-```python
+```bash
     def _is_ident(k):
         k = str(k)
 >       if not _is_id_start(k[0]) and k[0] not in (u'$', u'_'):

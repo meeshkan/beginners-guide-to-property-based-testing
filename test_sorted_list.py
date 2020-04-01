@@ -1,5 +1,24 @@
 import hypothesis.strategies as some
-from hypothesis import given
+from hypothesis import given, settings
+
+# Function that organizes list items in ascending order:
+def sort_this_list(list):
+    sorted_list = sorted(list)
+    return sorted_list
+
+
+# Example-based test that uses two manually determined cases:
+def test_sort_this_list_example():
+    assert sort_this_list([5, 3, 1, 4, 2]) == [1, 2, 3, 4, 5]  # True
+    assert sort_this_list(["a", "d", "c", "e", "b"]) == [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+    ]  # True
+
+# Property-based test that automatically generates up to 10,000 cases:
 
 # Use the @given decorator to guide Hypothesis to the input value needed:
 @given(input_list=some.lists(some.integers()))
