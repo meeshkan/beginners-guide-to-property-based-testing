@@ -1,6 +1,7 @@
 import hypothesis.strategies as some
 from hypothesis import given, settings
 
+
 # Function that organizes list items in ascending order:
 def sort_this_list(list):
     sorted_list = sorted(list)
@@ -17,6 +18,7 @@ def test_sort_this_list_example():
         "d",
         "e",
     ]  # True
+
 
 # Property-based test that automatically generates up to 10,000 cases:
 

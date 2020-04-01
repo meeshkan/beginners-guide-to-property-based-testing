@@ -7,10 +7,11 @@ try:
 except ModuleNotFoundError:
     pass
 
-# Slower solution that converts the integer to a binary string 
+# Slower solution that converts the integer to a binary string
 # and then counts the occurences of the string "1" inside:
 def count_bits_slow(input_int):
     return bin(input_int).count("1")
+
 
 @pytest.mark.skip(reason="Avoid forcing to install gmpy2")
 @given(some.integers(min_value=0))

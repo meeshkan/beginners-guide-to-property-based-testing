@@ -12,6 +12,7 @@ some_object = some.recursive(
     | some.dictionaries(some.text(printable), children, min_size=1),
 )
 
+
 @given(some_object)
 # Sets the number of test cases to 500 rather than the default 100:
 @settings(max_examples=500)
