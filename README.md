@@ -77,9 +77,7 @@ pytest file_name.py
 - 📖 [Property-based Testing Patterns](https://blog.ssanj.net/posts/2016-06-26-property-based-testing-patterns.html) by Sanjiv Sahayam
 - 🎥 [Testing the Hard Stuff and Staying Sane](https://www.youtube.com/watch?v=zi0rHwfiX1Q) by John Hughes
 - 📖 [Property-based testing: what is it?](https://blog.jessitron.com/2013/04/25/property-based-testing-what-is-it/) by Jessica Joy Kerr
-- 📖 [Automating Targeted Property-Based Testing](https://proper-testing.github.io/papers/icst2018.pdf) by Andreas Löscher and Konstantinos Sagonas
 - 📚 [Property-Based Testing with PropEr, Erlang, and Elixir](https://propertesting.com/) by Fred Hebert
-- 📖 [Tutorial for targeted property-based testing](https://proper-testing.github.io/tutorials/PropEr_testing_with_search_strategies.html) by PropEr
 
 ## Contributing
 
