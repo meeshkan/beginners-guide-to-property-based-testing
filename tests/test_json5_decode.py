@@ -16,7 +16,8 @@ some_object = some.recursive(
 @given(some_object)
 # Sets the number of test cases to 500 rather than the default 100:
 @settings(max_examples=500)
-# Add a hard-coded example to the generated input to prevent future bugs:
+# Add a hard-coded example to the generated input to prevent future issues.
+# Comment out the following line if you want to discover the bug yourself:
 @example({"": None})
 def test_json5_loads(input_object):
     dumped_json_string = json.dumps(input_object)

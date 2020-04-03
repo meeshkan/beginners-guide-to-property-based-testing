@@ -340,6 +340,8 @@ But doing this, you'll run into a problem. At the `json5.dumps(input_object)` st
 E       IndexError: string index out of range
 ```
 
+> Note: If you're following along and you want to discover the bug yourself, [uncomment `json5==0.9.3`](https://github.com/meeshkan/beginners-guide-to-property-based-testing/blob/master/requirements.txt#L10) and [remove `json5`](https://github.com/meeshkan/beginners-guide-to-property-based-testing/blob/master/requirements.txt#L8) from the `requirements.txt` file.
+
 Besides showing the stack trace, as usual, you also get an informative message showing the failed _hypothesis_ - otherwise known as the generated data that caused the test to fail:
 
 ```

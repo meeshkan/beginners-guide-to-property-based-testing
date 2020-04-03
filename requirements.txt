@@ -6,5 +6,5 @@ isort
 pytest
 pyyaml
 json5
-# If you want the bug discovered:
+# If you want to discover the bug in test_json5_decode.py yourself:
 # json5==0.9.3
