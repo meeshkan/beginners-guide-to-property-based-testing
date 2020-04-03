@@ -397,6 +397,6 @@ Some lingering questions from us...
 
 - Why weren't you using property-based testing before?
 - After reading through this guide, would you be willing to try? 
-- Would you be interested in seeing another article expanding on the topic?
+- Are you interested in seeing another article expanding on the topic?
 
 At [Meeshkan](https://meeshkan.com/), we're working to improve how people test their products. So no matter if you loved or loathed this guide, we want to hear from you. Leave us a comment below, [tweet at us](https://twitter.com/meeshkanml) or [reach out on Gitter](https://gitter.im/Meeshkan/community) to let us know what you think.
