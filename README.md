@@ -3,7 +3,7 @@
 [![CI](https://github.com/meeshkan/introduction-to-property-based-testing/workflows/CI/badge.svg)](https://github.com/meeshkan/introduction-to-property-based-testing/actions?query=branch%3Amaster)
 [![Chat on Gitter](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/meeshkan/community)
 
-This repository contains the source code for our article: [From 1 to 10,000 test cases in under an hour - A beginner's guide to property-based testing]().
+This repository contains the source code for our article: [From 1 to 10,000 test cases in under an hour - A beginner's guide to property-based testing](https://dev.to/meeshkan/from-1-to-10-000-test-cases-in-under-an-hour-a-beginner-s-guide-to-property-based-testing-1jf8).
 
 Most of the tests are written with [Hypothesis](https://hypothesis.readthedocs.io/en/latest/), a Python library for generative test cases.
 
