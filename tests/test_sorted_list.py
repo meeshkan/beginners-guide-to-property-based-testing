@@ -27,7 +27,7 @@ def test_sort_this_list_example():
 # Use the @settings object to set the number of cases to run:
 @settings(max_examples=10000)
 def test_sort_this_list_properties(input_list):
-    sorted_list = sorted(input_list)
+    sorted_list = sort_this_list(input_list)
 
     # Regardless of input, sorting should never change the size:
     assert len(sorted_list) == len(input_list)
