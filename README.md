@@ -64,6 +64,7 @@ pytest file_name.py
 - [FsCheck](https://fscheck.github.io/FsCheck/): .NET
 - [jqwik](https://jqwik.net/): Java
 - [PropCheck](https://github.com/alfert/propcheck): Elixir
+- [Proptest](https://github.com/AltSysrq/proptest): Rust
 - [PropEr](https://proper-testing.github.io/): Erlang
 - [RapidCheck](https://github.com/emil-e/rapidcheck): C++
 - [QuickCheck](https://hackage.haskell.org/package/QuickCheck): Haskell
