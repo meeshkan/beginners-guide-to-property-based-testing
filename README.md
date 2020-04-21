@@ -9,7 +9,7 @@ Most of the tests are written with [Hypothesis](https://hypothesis.readthedocs.i
 
 If you run into problems or have any questions, please [open an issue](https://github.com/meeshkan/beginners-guide-to-property-based-testing/issues) or [reach out to us on Gitter](https://gitter.im/meeshkan/community).
 
-## Table of Contents
+## What's in this document
 - [Running the tests](#running-the-tests)
 - [Available libraries](#available-libraries)
 - [More resources](#more-resources)
